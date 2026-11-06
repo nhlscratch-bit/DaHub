@@ -39,3 +39,192 @@ select.inp{appearance:none}
 .xp-panel #hLvl{white-space:nowrap}
 .tile2{min-width:0;overflow:hidden;font-size:11px;letter-spacing:-.01em}
 #timerDisplay{font-size:22px !important}
+
+/* =====================================================================
+   REFINEMENT LAYER v2: poised, but with the DaHub personality kept.
+   Visual-only overrides. No layout, spacing or markup changes.
+   Brand art (logos, header-*.png) untouched.
+   Rules of thumb: thin crisp rims instead of thick outlines, soft glow
+   instead of hard toy shadows, graffiti only for taglines/branding,
+   chrome-gradient titles kept but upright and tighter.
+   ===================================================================== */
+:root{
+  --ink:#f3f4f8;--ink-2:#a9aebf;--ink-3:#7a8094;
+  --line:rgba(255,255,255,.10);--line-2:rgba(255,255,255,.18);
+  --violet:#a855f7;--volt:#7CFF3A;
+}
+
+/* Background: brand light is back in the corners, fine grain stays subtle */
+body::before{background:
+  radial-gradient(ellipse 70% 38% at 0% 0%,rgba(124,58,237,.34),transparent 62%),
+  radial-gradient(ellipse 60% 32% at 100% 16%,rgba(168,85,247,.16),transparent 62%),
+  radial-gradient(ellipse 70% 30% at 100% 100%,rgba(124,255,58,.14),transparent 62%),
+  radial-gradient(ellipse 70% 28% at 0% 100%,rgba(124,58,237,.18),transparent 62%),
+  repeating-linear-gradient(115deg,rgba(255,255,255,.012) 0 2px,transparent 2px 9px),#050507 !important}
+
+/* Panels: brushed-metal rim lit by each card's own accent colours */
+.chrome{border-radius:20px;
+  background:radial-gradient(120% 90% at 0% 0%,color-mix(in srgb,var(--a,#a855f7) 11%,transparent),transparent 55%),
+             linear-gradient(155deg,#1b1d27 0%,#0d0e14 45%,#060609 100%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.14),inset 0 -8px 16px rgba(0,0,0,.5),
+             0 0 18px -6px var(--g,rgba(168,85,247,.35)),0 10px 22px -12px rgba(0,0,0,.85)}
+.chrome::before{padding:1px;background:conic-gradient(from 210deg,color-mix(in srgb,var(--a,#a855f7) 75%,transparent),rgba(255,255,255,.07) 28%,rgba(255,255,255,.5) 48%,rgba(255,255,255,.07) 64%,color-mix(in srgb,var(--b,#7CFF3A) 75%,transparent))}
+.chrome::after{background:linear-gradient(115deg,transparent 44%,rgba(255,255,255,.07) 50%,transparent 56%);background-size:260% 100%;animation:sweep 10s ease-in-out infinite}
+.hero{border-radius:24px}
+.hero-smoke{background:radial-gradient(ellipse 55% 70% at 88% 42%,rgba(168,85,247,.32),transparent 70%),radial-gradient(ellipse 40% 40% at 72% 92%,rgba(124,255,58,.10),transparent 70%)}
+.bolt{opacity:.38;filter:none}
+.neon{border-radius:18px;border:1px solid color-mix(in srgb,var(--c) 38%,rgba(255,255,255,.14));
+  background:radial-gradient(110% 80% at 0% 0%,color-mix(in srgb,var(--c) 10%,transparent),transparent 60%),linear-gradient(165deg,#181a23,#0b0c11 60%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 0 14px -6px color-mix(in srgb,var(--c) 60%,transparent),0 10px 22px -12px rgba(0,0,0,.85)}
+.neon.sm{border-radius:14px}
+
+/* Typography: signature chrome titles stay, upright and sharper; graffiti only for taglines */
+.ttl,.sub-ttl{font-family:Anton,Inter,sans-serif;font-style:normal;text-transform:uppercase;transform:skewX(-6deg);
+  letter-spacing:.05em;font-weight:400;
+  background:linear-gradient(180deg,#fff,#c9cde0 48%,#7c8197 80%,#e6e9f5);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 1px 0 rgba(0,0,0,.9))}
+.sub-ttl{font-size:20px}
+.tr-title{font-family:'Permanent Marker',cursive}
+.hero-wb{font-family:'Permanent Marker',cursive;transform:skewX(-8deg);color:var(--violet);font-size:21px;
+  text-shadow:0 0 12px rgba(168,85,247,.55);letter-spacing:.01em;font-weight:400}
+.hero-name{font-family:Syne,Inter,sans-serif;font-weight:800;transform:skewX(-6deg);letter-spacing:-.015em;
+  background:linear-gradient(180deg,#fff 0,#e6e9f5 40%,#8c91a8 72%,#f4f5fc 100%);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 2px 0 #1f0838) drop-shadow(0 0 12px rgba(168,85,247,.45))}
+.tr-sub,.sec-tag{font-family:'Permanent Marker',cursive;font-weight:400;font-size:16px;letter-spacing:.02em}
+.tr-sub{transform:rotate(-5deg)}
+.sec-tag{transform:skewX(-8deg)}
+.tr-sub span:first-child{color:var(--volt);text-shadow:0 0 8px rgba(124,255,58,.45)}
+.tr-sub span:last-child{color:var(--violet);text-shadow:0 0 8px rgba(168,85,247,.45)}
+.sec-word{font-family:'Permanent Marker',cursive;filter:drop-shadow(0 2px 0 var(--sh,#3b1a66)) drop-shadow(0 0 8px var(--glow,rgba(168,85,247,.45)))}
+.hdr-tag{font-family:'Permanent Marker',cursive;transform:skewX(-8deg);color:#fff;letter-spacing:.02em;font-size:11px;font-weight:400}
+.hdr-tag b{color:var(--volt)}
+.lbl{color:#d6d9e6;font-weight:600;font-size:12.5px}
+
+/* Buttons: the volt-green / purple identity returns on a slimmer, crisper pill */
+.cta,.gbtn,.pbtn{border-radius:999px;font-weight:750;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 0 14px rgba(124,255,58,.30),0 6px 14px -8px rgba(0,0,0,.9);
+  transition:transform .12s ease,box-shadow .2s ease}
+.cta,.gbtn{background:linear-gradient(180deg,#16240f,#050805);border:1.5px solid var(--volt);color:#fff}
+.gbtn{text-transform:uppercase;letter-spacing:.07em;font-size:14px;font-weight:800}
+.cta{font-size:15px}
+.cta i,.gbtn i{color:var(--volt)}
+.pbtn{background:linear-gradient(180deg,#24103f,#08040e);border:1.5px solid var(--violet);text-transform:uppercase;letter-spacing:.05em;font-size:13px;font-weight:800;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 0 14px rgba(168,85,247,.32),0 6px 14px -8px rgba(0,0,0,.9)}
+.cta:hover,.gbtn:hover{box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 0 20px rgba(124,255,58,.45),0 6px 14px -8px rgba(0,0,0,.9)}
+.pbtn:hover{box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 0 20px rgba(168,85,247,.5),0 6px 14px -8px rgba(0,0,0,.9)}
+.cta:active,.gbtn:active,.pbtn:active{transform:scale(.97)}
+
+/* Chips, segments, faces: tinted by their own colour */
+.chipx{border:1px solid color-mix(in srgb,var(--c,#a855f7) 55%,rgba(255,255,255,.1));border-radius:14px;background:#0b0c12;font-weight:600;box-shadow:none}
+.chipx.on{background:linear-gradient(180deg,color-mix(in srgb,var(--c) 30%,#000),#06060a);border-color:var(--c);box-shadow:0 0 12px -2px color-mix(in srgb,var(--c) 55%,transparent)}
+.seg{border:1px solid rgba(168,85,247,.32);border-radius:999px;font-weight:700;font-size:14px;background:#08080c}
+.seg.on{background:linear-gradient(180deg,#14240e,#06090a);color:#fff;border-color:var(--volt);box-shadow:0 0 12px rgba(124,255,58,.35),inset 0 0 10px rgba(124,255,58,.12)}
+.face{border-radius:15px;border:1px solid color-mix(in srgb,var(--c) 45%,rgba(255,255,255,.1));box-shadow:none}
+.face.on{transform:scale(1.05);border-color:var(--c);box-shadow:0 0 14px color-mix(in srgb,var(--c) 55%,transparent);background:color-mix(in srgb,var(--c) 14%,#07070b)}
+.tile2{font-weight:700}
+.tile2 i{filter:drop-shadow(0 0 6px color-mix(in srgb,var(--c) 70%,transparent))}
+
+/* Inputs: purple edge, volt focus (original identity, thinner) */
+.inp,.fld{border:1px solid rgba(168,85,247,.4);border-radius:13px;background:#07070b;box-shadow:inset 0 2px 6px rgba(0,0,0,.7)}
+.inp:focus,.fld:focus-within{border-color:var(--volt);box-shadow:0 0 0 3px rgba(124,255,58,.14),inset 0 2px 6px rgba(0,0,0,.7)}
+.tgl{background:#1a1b22;border:1px solid var(--line-2)}
+.tgl.on{background:#3fae1c;border-color:#7CFF3A;box-shadow:0 0 10px rgba(124,255,58,.5)}
+
+/* Home tiles: colour-coded icons glow, small tactile press, no big bounce */
+.tile{border-radius:18px;font-weight:700;transition:transform .15s cubic-bezier(.3,1.3,.5,1)}
+.tile i{filter:drop-shadow(0 0 6px var(--a));font-size:29px}
+.tile:hover{transform:translateY(-2px)}.tile:active{transform:scale(.96)}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}}
+.tile{animation-duration:.4s}
+
+/* Rings, bars, badges: lit, not blazing */
+.ring-svg circle{filter:drop-shadow(0 0 3px currentColor)}
+.bar-t{height:7px;background:#181a22}
+.bar-t i{background:linear-gradient(90deg,#7CFF3A,#b7f36b);box-shadow:0 0 8px rgba(124,255,58,.7)}
+.badge{box-shadow:0 0 6px rgba(255,59,92,.7)}
+.tring::before{display:block}
+
+/* Dock: dark glass bar with a thin purple-to-green rim and glowing active state */
+.dock-inner{border-radius:26px;
+  background:linear-gradient(180deg,#1c1e28 0%,#07070a 50%,#000 100%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.22),-6px 4px 18px rgba(168,85,247,.28),6px 4px 18px rgba(124,255,58,.2),0 8px 18px -8px #000}
+.dock-inner::before{display:block;background:linear-gradient(90deg,#a855f7,#cfd3e2 32%,#cfd3e2 68%,#7CFF3A)}
+.dock button[data-d]{font-weight:600;font-size:10.5px;color:#b3b8c9}
+.dock button.on{color:#c084fc}
+.dock button.on i{transform:translateY(-2px);filter:drop-shadow(0 0 7px #a855f7);color:#c084fc}
+.dock-center .orb{border:3px solid transparent;
+  box-shadow:0 0 0 2px #a855f7,0 0 16px rgba(168,85,247,.7),0 0 26px rgba(124,255,58,.35),inset 0 0 14px rgba(0,0,0,.8);
+  background:radial-gradient(circle at 50% 35%,#2b1747,#050507 70%)}
+.dock-center em{color:#c084fc;text-shadow:0 0 8px rgba(168,85,247,.7);font-weight:600;font-size:12.5px}
+
+/* Header controls */
+.xp-panel{border-radius:20px;border:1px solid rgba(168,85,247,.45);background:linear-gradient(150deg,#1d1f29,#07070a);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 0 12px rgba(168,85,247,.28)}
+.ic-btn{border-radius:12px;border:1px solid rgba(168,85,247,.45);color:#c084fc;background:linear-gradient(150deg,#262833,#08080c);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.16)}
+
+.sheet{border-radius:24px 24px 0 0}
+:focus-visible{outline:2px solid rgba(168,85,247,.9);outline-offset:2px}
+
+/* =====================================================================
+   BRAND TYPE: Midnight Spree = titles + main text, Stay With Me = subtitles.
+   Only these two fonts are used. Icons (ph-*) are excluded.
+   ===================================================================== */
+:where(*:not([class*="ph-"]):not(.ph):not(svg):not(svg *)){font-family:'Midnight Spree','Stay With Me',sans-serif !important;font-weight:400 !important;font-synthesis:none}
+
+/* Subtitles / sub text */
+.font-display,.sub-ttl,.hero-wb,[class*="Permanent_Marker"]{font-family:'Stay With Me','Midnight Spree',sans-serif !important}
+.sub-ttl{font-size:22px;letter-spacing:.01em;text-transform:none;transform:none}
+.hero-wb{transform:none;font-size:22px;letter-spacing:.01em}
+
+/* Titles */
+.hero-name,.ttl,.sec-word,.tr-title,
+[class*="Permanent_Marker"][class*="text-[28px]"],
+[class*="Permanent_Marker"][class*="text-[24px]"],
+[class*="Permanent_Marker"][class*="text-[34px]"]{font-family:'Midnight Spree','Stay With Me',sans-serif !important;letter-spacing:.01em}
+.ttl,.sec-word{transform:none;text-transform:none}
+.hero-name{transform:none;letter-spacing:.005em}
+[class*="Permanent_Marker"]{transform:none !important;font-style:normal !important}
+
+/* SIZES */
+.text-xs{font-size:14px !important;line-height:1.35 !important}
+.text-sm{font-size:16px !important;line-height:1.4 !important}
+.text-base{font-size:18px !important;line-height:1.4 !important}
+.text-lg{font-size:20px !important;line-height:1.3 !important}
+.text-xl{font-size:22px !important;line-height:1.25 !important}
+.text-2xl{font-size:26px !important}
+.text-3xl{font-size:32px !important}
+.text-\[9px\]{font-size:11px !important}
+.text-\[10px\]{font-size:12px !important}
+.text-\[11px\]{font-size:13px !important}
+.text-\[12px\]{font-size:14px !important}
+.text-\[13px\]{font-size:15px !important}
+.text-\[14px\]{font-size:16px !important}
+.text-\[15px\]{font-size:17px !important}
+.text-\[16px\]{font-size:18px !important}
+.text-\[17px\]{font-size:19px !important}
+.text-\[19px\]{font-size:21px !important}
+.text-\[20px\]{font-size:22px !important}
+.text-\[22px\]{font-size:24px !important}
+.text-\[24px\]{font-size:26px !important}
+.text-\[26px\]{font-size:28px !important}
+.text-\[28px\]{font-size:30px !important}
+
+/* Component text (set with font shorthand in CSS) */
+.dock button[data-d]{font-size:11.5px;letter-spacing:0}
+.dock-center em{font-size:14px}
+.tile,.tile2{font-size:12.5px;letter-spacing:0}
+.tile2 small{font-size:11px}
+.chipx{font-size:14px}
+.lbl{font-size:13.5px}
+.cta{font-size:17px}
+.gbtn{font-size:15px}
+.pbtn{font-size:14.5px}
+.seg{font-size:15.5px}
+.inp{font-size:17px}
+.fld input{font-size:18px}
+.badge{font-size:11px}
+.xp-panel{font-size:14px}
+
+/* Midnight Spree is a distressed caps face: a touch of tracking keeps small text readable */
+body{letter-spacing:.02em}

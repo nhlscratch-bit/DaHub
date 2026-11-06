@@ -5,7 +5,7 @@ const ymd=(d=new Date())=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,
 const SECTIONS={};
 const crownSvg=c=>`<svg class="w-14 shrink-0" viewBox="0 0 100 70" fill="none" stroke="${c}" stroke-width="4" stroke-linejoin="round" style="filter:drop-shadow(0 0 8px ${c})"><path d="M10 62L4 14l24 20L50 6l22 28 24-20-6 48z"/></svg>`;
 const HDR={'MIND':'header-mind.png','MIND JOURNAL':'header-journal.png','MONEY':'header-money.png','ARCADE':'header-arcade.png','SOCIAL':'header-social.png','MEDIA':'header-media.png'};
-const secTitle=(w,tags,acc,icon)=>HDR[w]?`<div class="px-1"><img src="${HDR[w]}" alt="${w}" class="sec-img"><p class="sec-tag">${tags.map(t=>`<span style="color:${t[1]}">${t[0]}</span>`).join('')}</p></div>`:`<div class="px-1"><div class="flex items-center justify-between gap-2"><h2 class="sec-word" style="font-size:${w.length>8?40:58}px;--glow:${acc}99;--sh:${acc}55">${w}</h2>${icon||crownSvg(acc)}</div><p class="sec-tag">${tags.map(t=>`<span style="color:${t[1]};text-shadow:0 0 10px ${t[1]}aa">${t[0]}</span>`).join('')}</p></div>`;
+const secTitle=(w,tags,acc,icon)=>HDR[w]?`<div class="px-1"><img src="${HDR[w]}" alt="${w}" class="sec-img"></div>`:`<div class="px-1"><div class="flex items-center justify-between gap-2"><h2 class="sec-word" style="font-size:${w.length>8?40:58}px;--glow:${acc}99;--sh:${acc}55">${w}</h2>${icon||crownSvg(acc)}</div></div>`;
 const bigSheet=(t,h)=>{openSheet(t,'<div style="max-height:70vh;overflow-y:auto">'+h+'</div>')};
 const shortDate=s=>new Date(s+'T00:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});
 
@@ -185,7 +185,7 @@ function mediaSettings(){openSheet('YouTube Settings',`<p class="text-sm text-wh
 SECTIONS.media=function(){document.getElementById('mediaTitle').innerHTML=secTitle('MEDIA',[['DISCOVER.','#a855f7'],['WATCH.','#fff'],['VIBE.','#f5a623']],'#f5a623','<i class="ph-fill ph-play-circle text-5xl" style="color:#f5a623;filter:drop-shadow(0 0 10px #f5a623)"></i>');if(mView()==='browse')loadTrend();updateWatchlistCounter()};
 
 /* ---------- ASK ---------- */
-SECTIONS.ask=function(){document.getElementById('askTitle').innerHTML=`<div class="flex justify-between gap-2" style="min-height:190px"><div class="w-[40%]"></div><div class="flex-1 text-right"><img src="header-ask.png" alt="Ask AI" class="sec-img ml-auto"><p class="font-['Permanent_Marker'] text-[15px] text-[#2ea8ff] -skew-x-6">YOUR AI ASSISTANT</p><p class="font-['Permanent_Marker'] text-[19px] leading-tight mt-4 -skew-x-6"><span class="text-white">ASK ANYTHING...</span><br><span class="text-[#d946ef]">GET REAL ANSWERS.</span><br><span class="text-[#7CFF3A]">LEVEL UP YOUR MIND.</span></p></div></div>`};
+SECTIONS.ask=function(){document.getElementById('askTitle').innerHTML=`<div class="flex justify-between gap-2" style="min-height:190px"><div class="w-[40%]"></div><div class="flex-1 text-right"><img src="header-ask.png" alt="Ask AI" class="sec-img ml-auto"></div></div>`};
 
 /* ---------- boot ---------- */
 ['mind','money','journal','arcade','media','ask'].forEach(k=>SECTIONS[k]());

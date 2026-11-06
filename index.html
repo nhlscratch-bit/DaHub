@@ -52,8 +52,9 @@
 
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="screens.css">
+  <link rel="stylesheet" href="theme-chrome.css">
 </head>
-<body class="bg-obsidian text-cloud font-sans antialiased min-h-screen selection:bg-neonPurple selection:text-obsidian overflow-x-hidden">
+<body class="theme-chrome bg-obsidian text-cloud font-sans antialiased min-h-screen selection:bg-neonPurple selection:text-obsidian overflow-x-hidden">
 
   <!-- ========================================== -->
   <!-- 1. SPLASH / BOOT EXPERIENCE (Bible Sec 5)  -->
@@ -142,12 +143,12 @@
     <!-- TOP NAVIGATION BAR (Header) -->
     <header id="dhHeader" class="relative z-40 px-3 pb-2" style="padding-top:calc(env(safe-area-inset-top,0px) + 10px)">
       <div class="flex items-start gap-2">
-        <div class="hdr-logo shrink-0 cursor-pointer" onclick="switchTab('home')"><img data-brand="wm" alt="DaHub" class="w-full h-auto drop-shadow-[0_0_14px_rgba(167,139,250,.55)]"><p class="hdr-tag">ONE HUB. <b>EVERY SIDE</b> OF LIFE.</p></div>
+        <div class="hdr-logo shrink-0 cursor-pointer" onclick="switchTab('home')"><img data-brand="wm" alt="DaHub" class="w-full h-auto drop-shadow-[0_0_14px_rgba(167,139,250,.55)]"></div>
         <div class="xp-panel">
           <div class="relative w-[50px] h-[50px] shrink-0"><svg viewBox="0 0 60 60" class="absolute inset-0"><circle cx="30" cy="30" r="26" fill="none" stroke="#2a1647" stroke-width="5"/><circle id="hRing" cx="30" cy="30" r="26" fill="none" stroke="#7CFF3A" stroke-width="5" stroke-linecap="round" stroke-dasharray="163.4" stroke-dashoffset="163.4" transform="rotate(-90 30 30)" style="transition:stroke-dashoffset 1s;filter:drop-shadow(0 0 4px #7CFF3A)"/></svg><img data-brand="emb" alt="" class="absolute inset-[9px] w-[32px] h-[32px] object-contain"></div>
           <div class="min-w-0 flex-1"><p class="text-[10px] font-bold text-white/80 leading-none">XP</p><p class="font-display font-extrabold text-[20px] text-white leading-tight"><span id="headerXpDisplay">0</span></p><p id="hLvl" class="text-[11px] font-bold hl leading-none">Level 1</p><div class="bar-t mt-1" style="height:5px"><i id="hBar" style="width:0%"></i></div></div>
           <button class="ic-btn" id="bellBtn" onclick="openNotifs()" aria-label="Notifications"><i class="ph-fill ph-bell"></i><span id="bellBadge" class="badge" style="display:none">0</span></button>
-          <button class="ic-btn" onclick="openSoon('messages')" aria-label="Messages"><i class="ph-bold ph-chat-dots"></i></button>
+          <button class="ic-btn" onclick="openSoon('messages')" aria-label="Messages"><i class="ph-bold ph-chat-dots"></i></button><button class="ic-btn" id="rgbBtn" onclick="toggleRGB()" aria-label="RGB glow" aria-pressed="false">RGB</button>
         </div>
       </div>
     </header>
@@ -196,7 +197,7 @@
           <svg class="absolute right-4 top-4 w-12 opacity-80" viewBox="0 0 100 70" fill="none" stroke="#a855f7" stroke-width="4" stroke-linejoin="round"><path d="M10 62L4 14l24 20L50 6l22 28 24-20-6 48z"/></svg>
           <div class="relative z-10 p-5 pt-8" style="padding-right:30%">
             <img src="header-train.png" alt="TRAIN" class="sec-img">
-            <p class="tr-sub"><span>GET STRONGER.</span><br><span>BE GREATER.</span></p>
+            
             <button id="startBtn" onclick="startWorkout()" class="gbtn w-full mt-5" style="max-width:290px;justify-content:space-between"><span id="startTxt">Start Workout</span><i class="ph-bold ph-caret-right"></i></button>
           </div>
         </div>
@@ -394,11 +395,11 @@
             <div class="flex items-center gap-3">
               <i class="ph-bold ph-moon-stars text-violetHub text-lg"></i>
               <div>
-                <p class="text-xs font-semibold text-cloud">High-Contrast Neon Glow</p>
-                <p class="text-[10px] text-cloudMuted">Visual glow effects on active cards</p>
+                <p class="text-xs font-semibold text-cloud">RGB Glow</p>
+                <p class="text-[10px] text-cloudMuted">Purple and green shine on cards and frames</p>
               </div>
             </div>
-            <input type="checkbox" checked class="accent-neonPurple w-4 h-4 cursor-pointer">
+            <input type="checkbox" id="rgbToggle" onchange="setRGB(this.checked)" class="w-4 h-4 cursor-pointer">
           </div>
 
           <button onclick="logOut()" class="w-full py-2.5 rounded-xl border border-white/15 text-white/80 text-xs font-bold hover:bg-white/5 transition-colors mb-2">
@@ -534,5 +535,7 @@
 
 <script src="05-train.js"></script>
   <script src="06-sections.js"></script>
+  <script src="07-theme.js"></script>
+  <script src="08-smartstack.js"></script>
 </body>
 </html>
