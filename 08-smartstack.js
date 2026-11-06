@@ -5,7 +5,7 @@ const PL=[['Active Recovery',['Walk 30 min','Mobility flow','Foam rolling','Core
 const ico=(n,c='')=>`<i class="ph-fill ${n} ${c}"></i>`;
 const hd=(i,t)=>`<p class="ss-h">${ico(i)}<span>${t}</span></p>`;
 const steps=()=>LS(K,{})[T()]||0;
-let W=null,WS='idle',ssI=(h=>h<11?0:h<18?1:4)(new Date().getHours());
+let W=null,WS='idle',ssI=3;
 
 const c1=()=>{const p=PL[new Date().getDay()];return hd('ph-barbell','Workout of the day')+`<p class="ss-big">${p[0]}</p><p class="ss-sm">${p[1].join(' · ')}</p><p class="ss-sm">About ${p[2]}</p><button class="gbtn ss-btn" onclick="switchTab('train')">Start <i class="ph-bold ph-caret-right"></i></button>`};
 
@@ -17,7 +17,7 @@ function ssWeather(){const s=LS('dahub_geo_v1',null);if(s){wLoad(s.lat,s.lon);re
 const c3=()=>{const b=hd('ph-sun','Weather');if(WS==='ok'){const w=WC(W.c);return b+`<div class="ss-wx">${ico(w[0],'ss-wi')}<p class="ss-big">${W.t}&deg;F</p></div><p class="ss-sm">${w[1]} · wind ${W.w} mph</p>`}
 return b+`<p class="ss-sm">${WS==='load'?'Loading...':WS==='deny'?'Location is blocked. Allow it in your browser settings.':WS==='err'?'Could not load weather here. Try again later.':'See your local weather. Your location stays on this device.'}</p>`+(WS==='load'?'':`<button class="gbtn ss-btn" onclick="ssWeather()">${WS==='idle'?'Enable weather':'Try again'}</button>`)};
 
-const c4=()=>{const s=steps(),k=Math.round(s*.04+workouts.length*7),C=2*Math.PI*34,p=Math.min(1,s/G);return hd('ph-footprints','Steps + calories')+`<div class="ss-st"><svg viewBox="0 0 80 80" class="ss-ring"><circle cx="40" cy="40" r="34" class="ss-t"/><circle cx="40" cy="40" r="34" class="ss-p" stroke-dasharray="${C}" stroke-dashoffset="${C*(1-p)}"/></svg><div><p class="ss-big">${fmt(s)}</p><p class="ss-sm">of ${fmt(G)} steps</p><p class="ss-sm">${ico('ph-fire')} About ${k} kcal (estimate)</p></div></div><div class="ss-btns"><button class="pbtn" onclick="ssStep(500)">+500</button><button class="pbtn" onclick="ssStep(1000)">+1,000</button><button class="pbtn" onclick="ssStep(-500)">-500</button></div>`};
+const c4=()=>{const s=steps(),k=Math.round(s*.04+workouts.length*7),C=2*Math.PI*34,p=Math.min(1,s/G);return hd('ph-footprints','Steps + calories')+`<svg class="ss-crown" viewBox="0 0 100 70"><path d="M10 62L4 14l24 20L50 6l22 28 24-20-6 48z" stroke-linejoin="round"/></svg><div class="ss-st"><div class="ss-rw"><svg viewBox="0 0 80 80" class="ss-ring"><circle cx="40" cy="40" r="34" class="ss-t"/><circle cx="40" cy="40" r="34" class="ss-p" stroke-dasharray="${C}" stroke-dashoffset="${C*(1-p)}"/></svg><i class="ph-fill ph-sneaker ss-shoe"></i></div><div><p class="ss-big">${fmt(s)}</p><p class="ss-sm">of ${fmt(G)} steps</p><p class="ss-sm">${ico('ph-fire')} About ${k} kcal (estimate)</p></div></div><div class="ss-btns"><button class="pbtn" onclick="ssStep(500)">+500</button><button class="pbtn" onclick="ssStep(1000)">+1,000</button><button class="pbtn" onclick="ssStep(-500)">-500</button></div>`};
 
 const c5=()=>{const cur=(MM[T()]||{}).m;return hd('ph-brain','Mind check-in')+`<p class="ss-sm">${cur?'Logged for today. Tap to change it.':'How are you feeling today?'}</p><div class="ss-faces">${MOODS.map(m=>`<button aria-label="${m[1]}" class="face${cur===m[0]?' on':''}" style="--c:${m[3]}" onclick="ssMood('${m[0]}')">${ico(m[2])}</button>`).join('')}</div><button class="ss-link" onclick="switchTab('mind')">Open Mind &rarr;</button>`};
 

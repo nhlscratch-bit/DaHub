@@ -1,0 +1,77 @@
+/* ===== DaHub Home reference replica: cream + glossy black cards + chrome tiles. Loads after theme-chrome.css ===== */
+body.theme-chrome{--tan:#E8DFC9;--tan2:#dccfb3;--ng:#A6FF00;--pu:#7918E8;--sv:#C7C9D0}
+body.theme-chrome #dhHeader .xp-panel{background:linear-gradient(165deg,#2c2e35,#0a0a0c 45%,#050506)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 0 0 1.5px var(--sv),0 0 16px -4px rgba(166,255,0,.55),0 10px 18px -10px #000!important}
+body.theme-chrome #dhHeader .xp-panel *{color:#F4F3F0!important}
+body.theme-chrome #dhHeader .xp-panel i{color:#F4F3F0!important}
+/* greeting underline */
+body.theme-chrome .ss-hey::after{content:"";display:block;height:3px;width:min(300px,70%);margin-top:2px;border-radius:3px;background:linear-gradient(90deg,var(--ng),rgba(166,255,0,0));box-shadow:0 0 8px rgba(166,255,0,.6)}
+/* dark glossy cards: steps stack, stats, streak */
+body.theme-chrome #tab-home :is(.ss-card.chrome,.grid.grid-cols-5.gap-3>.chrome){background:linear-gradient(150deg,#26272e 0%,#0c0c0f 30%,#050506 62%,#17121f 100%)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.3),inset 0 -14px 22px rgba(0,0,0,.55),0 0 16px -5px rgba(166,255,0,.6),0 8px 20px -8px rgba(121,24,232,.75),0 16px 22px -14px #000!important;color:#F4F3F0}
+body.theme-chrome #tab-home :is(.ss-card.chrome,.grid.grid-cols-5.gap-3>.chrome)::before{padding:2px;background:conic-gradient(from 210deg,var(--pu),#E9EAEE 14%,var(--sv) 28%,#7d818b 44%,var(--ng) 60%,var(--sv) 76%,#fff 88%,var(--pu))!important}
+body.theme-chrome #tab-home :is(.ss-card.chrome,.grid.grid-cols-5.gap-3>.chrome)::after{background:linear-gradient(115deg,transparent 44%,rgba(255,255,255,.09) 50%,transparent 56%)}
+body.theme-chrome #tab-home :is(.ss-card.chrome,.grid.grid-cols-5.gap-3>.chrome) :is(*,p,span,b,small,div){color:#F4F3F0!important;-webkit-text-fill-color:#F4F3F0!important}
+body.theme-chrome #tab-home :is(.ss-card.chrome,.grid.grid-cols-5.gap-3>.chrome) :is(.ss-sm,.text-white\/70,.text-white\/60,.text-white\/55){color:#C7C9D0!important;-webkit-text-fill-color:#C7C9D0!important}
+body.theme-chrome #tab-home :is(.ss-card.chrome,.grid.grid-cols-5.gap-3>.chrome) i[class*="ph"]{color:#E3E5EA!important;-webkit-text-fill-color:#E3E5EA!important}
+body.theme-chrome #tab-home .ss-card .ss-big{background:linear-gradient(180deg,#fff,#aeb1ba 55%,#f4f5f7);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent!important;color:transparent!important;filter:drop-shadow(0 2px 0 rgba(0,0,0,.6))}
+/* progress rings */
+body.theme-chrome #tab-home .ss-t,body.theme-chrome #tab-home .ring-svg circle:not(.pr){stroke:#3b3d45!important}
+body.theme-chrome #tab-home .ss-p,body.theme-chrome #tab-home .ring-svg .pr{stroke:var(--ng)!important;filter:drop-shadow(0 0 5px rgba(166,255,0,.75))!important}
+body.theme-chrome #tab-home .bar-t{background:#2a2c33}
+body.theme-chrome #tab-home .bar-t i{background:var(--ng);box-shadow:0 0 8px rgba(166,255,0,.7)}
+/* step buttons: black pills with chrome rim */
+body.theme-chrome #tab-home .ss-card button:not(.ss-link){background:linear-gradient(180deg,#2a2c33,#050506 70%)!important;border:1.5px solid var(--sv)!important;color:#fff!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 6px 10px -6px #000!important}
+body.theme-chrome #tab-home .ss-card button *{color:#fff!important;-webkit-text-fill-color:#fff!important}
+/* streak: green flame + silver trophy */
+body.theme-chrome #tab-home .grid.grid-cols-5.gap-3>.chrome.col-span-2 .ph-fire{color:var(--ng)!important;-webkit-text-fill-color:var(--ng)!important;filter:drop-shadow(0 0 8px rgba(166,255,0,.8))!important}
+body.theme-chrome #tab-home .grid.grid-cols-5.gap-3>.chrome.col-span-2 .ph-trophy{color:#D9DBE1!important;-webkit-text-fill-color:#D9DBE1!important;filter:drop-shadow(0 0 12px rgba(121,24,232,.95))!important}
+/* quick-access tiles: chrome with green/purple edge light, dark icons */
+body.theme-chrome #tab-home .tile.chrome{background:linear-gradient(160deg,#fff 0%,#dfe1e6 28%,#aeb2bb 62%,#eceef1 100%)!important;box-shadow:inset 0 1px 0 #fff,inset 0 -3px 6px rgba(0,0,0,.2),0 0 0 1.5px #8d929c,-3px 3px 10px -4px rgba(166,255,0,.6),4px 6px 12px -4px rgba(121,24,232,.65),0 10px 12px -8px #000!important}
+body.theme-chrome #tab-home .tile i{color:#101014!important;filter:none!important}
+body.theme-chrome #tab-home .tile span{color:#101014!important}
+/* bottom nav */
+body.theme-chrome .dock-inner{background:linear-gradient(180deg,#1d1e24,#060608 52%,#000)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 0 18px -6px rgba(121,24,232,.85),0 12px 22px -10px #000!important}
+body.theme-chrome .dock-inner::before{background:linear-gradient(90deg,var(--pu),var(--sv) 28%,#ECEDF0 50%,var(--sv) 72%,var(--ng))!important}
+body.theme-chrome .dock button[data-d],body.theme-chrome .dock button[data-d] i{color:#F4F3F0!important}
+body.theme-chrome .dock button.on,body.theme-chrome .dock button.on i{color:var(--ng)!important;filter:drop-shadow(0 0 6px rgba(166,255,0,.75))!important}
+body.theme-chrome .dock-center em{color:#fff!important;background:#050506;border:1px solid var(--sv)}
+
+/* ===== v2: proportions (reference), heavier chrome rim, glassy dark chrome tiles ===== */
+body.theme-chrome .ss-track,body.theme-chrome .ss-card{height:192px}
+body.theme-chrome .ss-card{padding:12px 40px 12px 16px;gap:5px}
+body.theme-chrome .ss-rw{position:relative;width:84px;height:84px;flex:none}
+body.theme-chrome .ss-shoe{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:34px}
+body.theme-chrome .ss-crown{position:absolute;right:46px;top:11px;width:40px;fill:none;stroke:var(--ng);stroke-width:5;filter:drop-shadow(0 0 6px rgba(166,255,0,.85))}
+body.theme-chrome #tab-home :is(.ss-card.chrome,.grid.grid-cols-5.gap-3>.chrome){background:linear-gradient(135deg,#2d2e36 0%,#0b0b0e 22%,#040405 56%,#150f1c 100%)!important;box-shadow:inset 0 2px 1px rgba(255,255,255,.28),inset 0 -16px 24px rgba(0,0,0,.6),6px -6px 14px -6px rgba(166,255,0,.75),-6px 6px 14px -6px rgba(121,24,232,.9),0 14px 20px -12px #000!important}
+body.theme-chrome #tab-home :is(.ss-card.chrome,.grid.grid-cols-5.gap-3>.chrome)::before{padding:4px;background:conic-gradient(#E9EAEE,var(--ng) 13%,#E9EAEE 24%,#7d818b 37%,#d4d6dc 50%,var(--pu) 63%,#E9EAEE 75%,#7d818b 88%,#E9EAEE)!important}
+body.theme-chrome #tab-home :is(.ss-card.chrome,.grid.grid-cols-5.gap-3>.chrome)::after{background:linear-gradient(115deg,transparent 40%,rgba(255,255,255,.14) 47%,transparent 54%),repeating-linear-gradient(115deg,rgba(255,255,255,.045) 0 6px,transparent 6px 18px)!important}
+body.theme-chrome #tab-home .tile{aspect-ratio:1.1/1}
+body.theme-chrome #tab-home .tile.chrome{background:linear-gradient(165deg,#f7f8fa 0%,#cfd2d8 22%,#7c808b 52%,#b4b7bf 76%,#eef0f3 100%)!important;box-shadow:inset 0 2px 1px rgba(255,255,255,.95),inset 0 -6px 9px rgba(0,0,0,.38),inset 0 0 0 1px rgba(0,0,0,.28),0 0 0 2px #2a2c33,0 0 0 3.5px #c7c9d0,-4px 4px 10px -3px rgba(166,255,0,.7),5px 7px 12px -3px rgba(121,24,232,.75),0 12px 14px -8px #000!important}
+body.theme-chrome #tab-home .tile.chrome::after{background:linear-gradient(180deg,rgba(255,255,255,.6) 0%,rgba(255,255,255,0) 46%),linear-gradient(115deg,transparent 40%,rgba(255,255,255,.45) 48%,transparent 56%)!important;background-size:100% 100%,100% 100%!important}
+body.theme-chrome .ic-btn{background:linear-gradient(165deg,#f7f8fa,#cfd2d8 30%,#7c808b 58%,#d9dce1)!important;box-shadow:inset 0 2px 1px #fff,inset 0 -4px 6px rgba(0,0,0,.3),0 0 0 1.5px #2a2c33,0 6px 10px -5px #000!important}
+
+/* ===== TRAIN screen: same tokens/materials as Home (scoped to #tab-train only) ===== */
+body.theme-chrome{--dkbg:linear-gradient(135deg,#2d2e36 0%,#0b0b0e 22%,#040405 56%,#150f1c 100%);--dksh:inset 0 2px 1px rgba(255,255,255,.28),inset 0 -16px 24px rgba(0,0,0,.6),6px -6px 14px -6px rgba(166,255,0,.75),-6px 6px 14px -6px rgba(121,24,232,.9),0 14px 20px -12px #000;--glass:linear-gradient(165deg,#f7f8fa 0%,#cfd2d8 24%,#7c808b 54%,#b4b7bf 78%,#eef0f3 100%);--glsh:inset 0 2px 1px rgba(255,255,255,.95),inset 0 -5px 8px rgba(0,0,0,.35),0 0 0 2px #2a2c33,0 0 0 3px #c7c9d0,-3px 3px 8px -3px rgba(166,255,0,.65),4px 6px 10px -3px rgba(121,24,232,.7);--rimc:conic-gradient(#E9EAEE,#A6FF00 13%,#E9EAEE 24%,#7d818b 37%,#d4d6dc 50%,#7918E8 63%,#E9EAEE 75%,#7d818b 88%,#E9EAEE)}
+body.theme-chrome #tab-train .chrome{background:var(--dkbg)!important;box-shadow:var(--dksh)!important;color:#F4F3F0}
+body.theme-chrome #tab-train .chrome::before{padding:4px;background:var(--rimc)!important}
+body.theme-chrome #tab-train .chrome::after{background:linear-gradient(115deg,transparent 40%,rgba(255,255,255,.14) 47%,transparent 54%),repeating-linear-gradient(115deg,rgba(255,255,255,.045) 0 6px,transparent 6px 18px)!important}
+body.theme-chrome #tab-train .chrome :is(*,p,span,b,small,div,label,h2){color:#F4F3F0!important;-webkit-text-fill-color:#F4F3F0!important}
+body.theme-chrome #tab-train .chrome :is(.text-white\/60,.text-white\/70,.text-white\/85,.lbl){color:#C7C9D0!important;-webkit-text-fill-color:#C7C9D0!important}
+body.theme-chrome #tab-train .chrome i[class*="ph"]{color:#E3E5EA!important;-webkit-text-fill-color:#E3E5EA!important;filter:none!important}
+body.theme-chrome #tab-train .chrome :is([class*="text-[#7CFF3A]"],#totalWorkoutVolume,#calcPrev){color:var(--ng)!important;-webkit-text-fill-color:var(--ng)!important}
+body.theme-chrome #tab-train .chrome.flex.items-stretch>div+div{box-shadow:inset 1px 0 0 rgba(199,201,208,.55)}
+body.theme-chrome #tab-train .chrome.flex.items-stretch>div>p:last-child{background:linear-gradient(180deg,#fff,#aeb1ba 55%,#f4f5f7);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent!important;color:transparent!important}
+body.theme-chrome #tab-train .gbtn{background:linear-gradient(180deg,#2a2c33,#050506 70%)!important;box-shadow:inset 0 2px 1px rgba(255,255,255,.3),0 0 0 2px #2a2c33,0 0 0 3.5px #C7C9D0,-4px 4px 10px -3px rgba(166,255,0,.7),5px 6px 10px -3px rgba(121,24,232,.75)!important;border:0!important}
+body.theme-chrome #tab-train .pbtn{background:var(--glass)!important;box-shadow:var(--glsh)!important;border:0!important}
+body.theme-chrome #tab-train .pbtn,body.theme-chrome #tab-train .pbtn *{color:#101014!important;-webkit-text-fill-color:#101014!important}
+body.theme-chrome #tab-train .tring{border-radius:50%;background:radial-gradient(circle at 50% 35%,#16161b,#000 70%)}
+body.theme-chrome #tab-train .tring::before{background:var(--rimc)!important}
+body.theme-chrome #tab-train .tring circle:first-child{stroke:#3b3d45!important}
+body.theme-chrome #tab-train #tRing{stroke:var(--ng)!important;filter:drop-shadow(0 0 6px rgba(166,255,0,.85))!important}
+body.theme-chrome #tab-train #workoutLogForm{background:linear-gradient(180deg,#0b0b0e,#050506)!important;border:1.5px solid rgba(199,201,208,.45)!important}
+body.theme-chrome #tab-train :is(.inp,.fld){background:linear-gradient(180deg,#050506,#15161b)!important;border:1.5px solid #C7C9D0!important;box-shadow:inset 0 2px 5px rgba(0,0,0,.8)!important}
+body.theme-chrome #tab-train :is(.inp,.fld input){color:#F4F3F0!important;-webkit-text-fill-color:#F4F3F0!important}
+body.theme-chrome #tab-train :is(input,textarea)::placeholder{color:#8b90a0!important}
+body.theme-chrome #tab-train .tgl{background:#050506!important;border:1.5px solid #C7C9D0!important}
+body.theme-chrome #tab-train .tgl.on{border-color:var(--ng)!important;box-shadow:0 0 8px rgba(166,255,0,.6)!important}
+body.theme-chrome #tab-train #workoutList>*{background:#0c0c10!important;border:1px solid rgba(199,201,208,.35)!important}
+body.theme-chrome #tab-train .chrome .ph-trophy{color:#D9DBE1!important;-webkit-text-fill-color:#D9DBE1!important;filter:drop-shadow(0 0 12px rgba(121,24,232,.95))!important}
