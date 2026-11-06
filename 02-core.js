@@ -511,7 +511,10 @@
     let currentMediaCategory = 'all';
 
     const STORAGE_KEY_YTKEY = 'dahub_ytkey_v3';
-    let ytKey = localStorage.getItem(STORAGE_KEY_YTKEY) || '';
+    // Built-in public key (restrict it by HTTP referrer + YouTube Data API v3 in Google Cloud Console).
+    // A key pasted in YouTube Settings still overrides it on that device.
+    const DEFAULT_YT_KEY = 'AIzaSyCl9cRFQELx2JI1404ykEoa50C6Ta85M-M';
+    let ytKey = localStorage.getItem(STORAGE_KEY_YTKEY) || DEFAULT_YT_KEY;
     let mediaResults = [], mediaState = 'idle', mediaError = '', lastLoad = null;
     const YT_QUERIES = { music: 'music', gaming: 'gaming', news: 'news today', learn: 'how to learn' };
     const mEsc = t => String(t == null ? '' : t).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -519,7 +522,18 @@
     const isSaved = id => watchlist.some(w => w.id === id);
     const findVideo = id => mediaResults.find(v => v.id === id) || watchlist.find(v => v.id === id) || (typeof trendList !== 'undefined' && trendList.find(v => v.id === id)) || (typeof HIST !== 'undefined' && HIST.find(v => v.id === id));
 
+    // Response cache so shared daily quota lasts longer (search = 100 units each).
+    const YT_CACHE_PREFIX = 'dahub_ytc_';
+    function ytCacheGet(k) { try { const o = JSON.parse(localStorage.getItem(YT_CACHE_PREFIX + k)); if (o && o.exp > Date.now()) return o.d; } catch (e) {} return null; }
+    function ytCacheSet(k, d, ttl) { try { localStorage.setItem(YT_CACHE_PREFIX + k, JSON.stringify({ exp: Date.now() + ttl, d })); } catch (e) {} }
     async function ytFetch(path, params) {
+      const ck = path + '?' + new URLSearchParams(params).toString();
+      const hit = ytCacheGet(ck); if (hit) return hit;
+      const data = await ytFetchRaw(path, params);
+      ytCacheSet(ck, data, path === 'search' ? 3 * 3600e3 : 30 * 60e3);
+      return data;
+    }
+    async function ytFetchRaw(path, params) {
       let res;
       try { res = await fetch('https://www.googleapis.com/youtube/v3/' + path + '?' + new URLSearchParams({ ...params, key: ytKey })); }
       catch (e) { throw new Error('Network error. Check your connection and retry.'); }
@@ -647,7 +661,7 @@
     function updateHomeStats() { const s = (i, v) => { const e = document.getElementById(i); if (e) e.textContent = v; }; s('statSets', workouts.length); s('statPosts', posts.length); s('statSaved', watchlist.length); }
     document.addEventListener('DOMContentLoaded', () => {
       applyUserName(); updateHomeStats(); setInterval(updateHomeStats, 1000);
-      if (!localStorage.getItem('dahub_name_v3')) {
+      if (false) { // name prompt disabled: guest-first (login is optional via Profile)
         const d = document.createElement('div'); d.id = 'nameModal';
         d.className = 'fixed inset-0 z-[70] bg-obsidian/95 flex items-center justify-center p-6';
         d.innerHTML = '<div class="w-full max-w-sm glass-panel-elevated p-6 rounded-3xl border border-graphiteBorder space-y-4 text-center"><h2 class="font-display font-extrabold text-2xl text-white">Welcome to DaHub</h2><p class="text-xs text-cloudMuted">What should we call you?</p><input id="nameInput" maxlength="24" placeholder="Your name" class="w-full bg-obsidian border border-graphiteBorder rounded-2xl px-4 py-3 text-sm text-cloud text-center" onkeydown="if(event.key===\'Enter\')saveUserName()"><button onclick="saveUserName()" class="btn-chunky w-full py-3 rounded-2xl bg-gradient-to-r from-neonPurple via-violetHub to-volt text-obsidian font-display font-extrabold text-sm uppercase">Let\u2019s go</button></div>';

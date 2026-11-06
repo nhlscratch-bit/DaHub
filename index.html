@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Syne:wght@700;800;900&family=Permanent+Marker&family=Anton&display=swap" rel="stylesheet">
   <!-- Phosphor Icons CDN -->
-  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
 
   <script>
     tailwind.config = {
@@ -403,8 +403,8 @@
             <input type="checkbox" id="rgbToggle" onchange="setRGB(this.checked)" class="w-4 h-4 cursor-pointer">
           </div>
 
-          <button onclick="logOut()" class="w-full py-2.5 rounded-xl border border-white/15 text-white/80 text-xs font-bold hover:bg-white/5 transition-colors mb-2">
-            Log out
+          <button id="authToggleBtn" onclick="localStorage.getItem('dahub_name_v3')&&localStorage.getItem('dahub_name_v3')!=='You'?logOut():openLogin()" class="w-full py-2.5 rounded-xl border border-white/15 text-white/80 text-xs font-bold hover:bg-white/5 transition-colors mb-2">
+            Log in / Log out
           </button>
           <button onclick="resetAllDataConfirmation()" class="w-full py-2.5 rounded-xl border border-red-500/30 text-red-400 text-xs font-bold hover:bg-red-500/10 transition-colors">
             Reset Demo Data to Defaults

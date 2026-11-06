@@ -96,10 +96,15 @@ function showAuth() {
     <div class="w-full max-w-sm mt-8 rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur p-5 text-left shadow-[0_20px_60px_rgba(0,0,0,0.5)]"><div id="authCard">${authCard()}</div></div>`;
   document.body.appendChild(d);
 }
+// Guest-first: restore a saved session silently; the login screen only opens when asked (openLogin).
 async function openOnboarding() {
-  const old = authG('nameModal'); if (old) old.remove();
   if (sb) { try { const { data } = await sb.auth.getSession(); if (data.session) { await enterSession(data.session.user); return; } } catch (e) {} }
+}
+function openLogin() {
+  const old = authG('nameModal'); if (old) old.remove();
   showAuth();
+  const d = authG('nameModal');
+  if (d) d.insertAdjacentHTML('afterbegin', '<button onclick="document.getElementById(\'nameModal\').remove()" class="absolute top-4 right-4 text-white/60 text-xs font-bold px-3 py-2 rounded-xl border border-white/15">Continue as guest</button>');
 }
 
 /* ---- data actions ---- */
@@ -177,44 +182,66 @@ async function submitPost() {
 
 /* ---- views ---- */
 const friendHs = () => people.filter(p => p.st === 'friend').map(p => p.h);
+const EMBLEM = 'logo-emblem.png';
+const sAv = (p, cls = '') => (p.official || p.h === me().h)
+  ? `<img src="${EMBLEM}" alt="" class="s-av ${cls}">`
+  : `<div class="s-av s-av-i ${cls}" style="${p.c ? 'background:' + p.c : ''}">${mEsc(ini(p.name))}</div>`;
+const tagify = t => mEsc(t).replace(/#(\w+)/g, '<span class="s-tag">#$1</span>');
+const agoLbl = t => { const a = ago(t); return a === 'now' ? 'now' : a + ' ago'; };
+function toggleSave(id) { const p = sPosts.find(x => x.id === id), h = me().h; p.saves = p.saves || []; p.saves = p.saves.includes(h) ? p.saves.filter(x => x !== h) : [...p.saves, h]; persist(); renderSocial(); }
+function seedOfficial() {
+  if (localStorage.getItem('dahub_seed_v1')) return;
+  const base = { h: 'dahub', name: 'DaHub', official: true, likes: [], comments: [], saves: [] };
+  sPosts.push({ ...base, id: 'o_1', kind: 'banner', text: 'Level up your mindset. 💯 The journey is yours. 🚀\n#DaHub #Mindset #Growth', banner: 'Think. Train. Thrive.', ts: Date.now() - 2 * 3600e3 });
+  sPosts.push({ ...base, id: 'o_2', kind: 'text', text: 'Good vibes only. 💚💜', ts: Date.now() - 5 * 3600e3 });
+  persist(); localStorage.setItem('dahub_seed_v1', '1');
+}
 function postCard(p) {
-  const mine = p.h === me().h, liked = p.likes.includes(me().h);
-  const media = p.kind === 'photo' ? `<img data-m="${p.media}" class="w-full rounded-2xl mt-3 max-h-96 object-cover bg-obsidian">`
-    : p.kind === 'short' ? (p.yt ? `<iframe class="w-full aspect-[9/16] max-h-[28rem] rounded-2xl mt-3" src="https://www.youtube.com/embed/${encodeURIComponent(p.yt)}?playsinline=1&rel=0" allowfullscreen></iframe>` : `<video data-m="${p.media}" controls playsinline class="w-full rounded-2xl mt-3 max-h-[28rem] bg-black"></video>`) : '';
-  const wk = p.w ? `<div class="mt-3 rounded-2xl p-4 bg-gradient-to-br from-volt/20 to-neonPurple/20 border border-volt/30"><p class="text-[10px] tracking-widest text-volt font-bold">TRAINING SESSION</p><div class="flex gap-6 mt-1"><div><p class="text-2xl font-display font-black text-white">${p.w.sets}</p><p class="text-[10px] text-cloudMuted uppercase">Sets</p></div><div><p class="text-2xl font-display font-black text-white">${p.w.vol.toLocaleString()}</p><p class="text-[10px] text-cloudMuted uppercase">Volume</p></div></div><p class="text-xs text-cloud mt-2">${p.w.ex.map(mEsc).join(' \u2022 ')}</p></div>` : '';
-  const cms = (openCm[p.id] ? `<div class="mt-3 space-y-2">${p.comments.map(c => `<p class="text-xs text-cloud"><b>@${mEsc(c.h)}</b> ${mEsc(c.t)}</p>`).join('')}<div class="flex gap-2"><input id="cm_${p.id}" placeholder="Add a comment" onkeydown="if(event.key==='Enter')addComment('${p.id}')" class="flex-1 bg-obsidian border border-graphiteBorder rounded-xl px-3 py-2 text-xs text-cloud"><button onclick="addComment('${p.id}')" class="text-xs font-bold text-accentPink px-2">Send</button></div></div>` : '');
-  return `<article class="neon p-4" style="--c:#a855f7">
-    <div class="flex items-center gap-3">${avatar(p.name, p.c)}<div class="flex-1 min-w-0"><p class="text-sm font-bold text-cloud truncate">${mEsc(p.name)}${p.demo ? ' <span class="text-[9px] px-1.5 py-0.5 rounded bg-graphite text-cloudMuted">TEST</span>' : ''}</p><p class="text-[11px] text-cloudMuted">@${mEsc(p.h)} \u2022 ${ago(p.ts)}</p></div>${mine ? `<button onclick="delPost('${p.id}')" class="text-cloudMuted text-xs p-1">Delete</button>` : ''}</div>
-    ${p.text ? `<p class="text-sm text-cloud mt-3 whitespace-pre-wrap">${mEsc(p.text)}</p>` : ''}${media}${wk}
-    <div class="flex items-center gap-5 mt-3 text-xs text-cloudMuted"><button onclick="toggleLike('${p.id}')" class="${liked ? 'text-accentPink font-bold' : ''}">${liked ? '\u2665' : '\u2661'} ${p.likes.length}</button><button onclick="toggleCm('${p.id}')">Comment ${p.comments.length}</button><button onclick="sharePost('${p.id}')">Share</button></div>${cms}</article>`;
+  const mine = p.h === me().h, liked = p.likes.includes(me().h), saved = (p.saves || []).includes(me().h);
+  const media = p.kind === 'photo' ? `<img data-m="${p.media}" class="s-media">`
+    : p.kind === 'banner' ? `<div class="s-banner"><img src="logo-wordmark.png" alt="DaHub"><span>${mEsc(p.banner || '')}</span></div>`
+    : p.kind === 'short' ? (p.yt ? `<iframe class="s-media s-vert" src="https://www.youtube.com/embed/${encodeURIComponent(p.yt)}?playsinline=1&rel=0" allowfullscreen></iframe>` : `<video data-m="${p.media}" controls playsinline class="s-media s-vert"></video>`) : '';
+  const wk = p.w ? `<div class="s-wk"><p class="s-wk-h">TRAINING SESSION</p><div class="s-wk-r"><div><b>${p.w.sets}</b><small>Sets</small></div><div><b>${p.w.vol.toLocaleString()}</b><small>Volume</small></div></div><p class="s-wk-ex">${p.w.ex.map(mEsc).join(' • ')}</p></div>` : '';
+  const cms = openCm[p.id] ? `<div class="s-cms">${p.comments.map(c => `<p><b>@${mEsc(c.h)}</b> ${mEsc(c.t)}</p>`).join('')}<div class="s-cm-row"><input id="cm_${p.id}" placeholder="Add a comment" onkeydown="if(event.key==='Enter')addComment('${p.id}')" class="inp"><button onclick="addComment('${p.id}')" class="s-send">Send</button></div></div>` : '';
+  return `<article class="chrome s-post">
+    <div class="s-head">${sAv(p)}<div class="s-who"><p class="s-name">${mEsc(p.name)}${p.demo ? ' <span class="s-test">TEST</span>' : ''}</p><p class="s-sub">${agoLbl(p.ts)} • <i class="ph ph-globe-hemisphere-west"></i></p></div>${mine ? `<button onclick="delPost('${p.id}')" class="s-more" aria-label="Delete post"><i class="ph-bold ph-trash"></i></button>` : `<span class="s-more" aria-hidden="true"><i class="ph-bold ph-dots-three"></i></span>`}</div>
+    ${p.text ? `<p class="s-text">${tagify(p.text)}</p>` : ''}${media}${wk}
+    <div class="s-bar"><button onclick="toggleLike('${p.id}')" class="${liked ? 'on' : ''}" aria-label="Like"><i class="${liked ? 'ph-fill' : 'ph-bold'} ph-thumbs-up"></i><span>${p.likes.length}</span></button><button onclick="toggleCm('${p.id}')" aria-label="Comments"><i class="ph-bold ph-chat-circle"></i><span>${p.comments.length}</span></button><button onclick="sharePost('${p.id}')"><i class="ph-bold ph-share-fat"></i><span>SHARE</span></button><button onclick="toggleSave('${p.id}')" class="${saved ? 'on' : ''}"><i class="${saved ? 'ph-fill' : 'ph-bold'} ph-bookmark-simple"></i><span>SAVE</span></button></div>${cms}</article>`;
 }
 function feedView() {
-  const fh = friendHs(), list = sPosts.filter(p => sFilter === 'friends' ? fh.includes(p.h) : true);
-  const chip = (k, l) => `<button onclick="sFilter='${k}';renderSocial()" class="px-3.5 py-1.5 rounded-xl text-xs font-bold ${sFilter === k ? 'bg-[#7CFF3A] text-black' : 'bg-graphite text-cloudMuted border border-graphiteBorder'}">${l}</button>`;
-  return `<div class="neon flex items-center gap-3 p-3" style="--c:#a855f7;border-radius:22px">${avatar(me().name)}<button onclick="openComposer('text')" class="flex-1 text-left italic text-white/45 font-['Permanent_Marker'] text-[15px]">What's on your mind?</button><button onclick="openComposer('photo')" aria-label="Photo" class="text-[#7CFF3A] text-3xl"><i class="ph-bold ph-camera"></i></button><span class="w-px h-8 bg-white/20"></span><button onclick="openComposer('short')" aria-label="Short" class="text-[#a855f7] text-3xl"><i class="ph-bold ph-lightning"></i></button></div>
-  <div class="grid grid-cols-4 gap-2">${[['text', 'Post', 'ph-pencil-simple'], ['photo', 'Photo', 'ph-image'], ['short', 'Short', 'ph-video-camera'], ['workout', 'Workout', 'ph-barbell']].map(([k, l, ic]) => `<button onclick="openComposer('${k}')" class="chipx justify-center !px-1 !text-[12px]"><i class="ph-bold ${ic}"></i>${l}</button>`).join('')}</div>
-  <div class="flex gap-2">${chip('all', 'Everyone')}${chip('friends', 'Friends')}</div>
-  ${list.length ? list.map(postCard).join('') : `<div class="text-center py-12 text-cloudMuted space-y-3 px-4"><p class="text-sm font-bold text-cloud">Your feed is empty</p><p class="text-xs">Post something, or add friends to see their updates here.</p><button onclick="goSocial('friends')" class="px-4 py-2 rounded-xl bg-[#7CFF3A] text-black text-xs font-bold">Find friends</button></div>`}`;
+  const fh = friendHs(), list = sPosts.filter(p => sFilter === 'friends' ? fh.includes(p.h) : true).sort((a, b) => b.ts - a.ts);
+  const chip = (k, l) => `<button onclick="sFilter='${k}';renderSocial()" class="s-filter ${sFilter === k ? 'on' : ''}">${l}</button>`;
+  return `<div class="chrome s-comp"><span class="s-av-wrap"><img src="${EMBLEM}" alt="" class="s-av"></span><button onclick="openComposer('text')" class="s-prompt">What's on your mind?</button><button onclick="openComposer('photo')" aria-label="Photo" class="s-ci"><i class="ph-bold ph-camera"></i></button><span class="s-div"></span><button onclick="openComposer('short')" aria-label="Short" class="s-ci"><i class="ph-bold ph-lightning"></i></button></div>
+  <div class="s-chips">${[['text', 'Post', 'ph-pencil-simple'], ['photo', 'Photo', 'ph-image'], ['short', 'Short', 'ph-video-camera'], ['workout', 'Workout', 'ph-barbell']].map(([k, l, ic]) => `<button onclick="openComposer('${k}')" class="s-chip"><i class="ph-bold ${ic}"></i><span>${l}</span></button>`).join('')}</div>
+  <div class="s-filters">${chip('all', 'Everyone')}${chip('friends', 'Friends')}</div>
+  ${list.length ? list.map(postCard).join('') : `<div class="chrome s-empty"><p class="s-name">Your feed is empty</p><p class="s-sub">Post something, or add friends to see their updates here.</p><button onclick="goSocial('friends')" class="s-chip"><span>Find friends</span></button></div>`}`;
+}
+function leadersView() {
+  const mh = me().h, hs = [mh, ...friendHs()];
+  const rows = hs.map(h => { const ps = sPosts.filter(p => p.h === h), pe = people.find(x => x.h === h); return { h, name: h === mh ? me().name : (pe && pe.name) || h, c: pe && pe.c, score: ps.length * 10 + ps.reduce((a, p) => a + p.likes.length, 0) * 2, posts: ps.length, likes: ps.reduce((a, p) => a + p.likes.length, 0) }; }).sort((a, b) => b.score - a.score);
+  return `<div class="chrome s-panel"><h3 class="s-h">Leaderboard</h3><p class="s-sub">You and your friends, ranked by posts (10 pts) and likes received (2 pts). Scores update as people post.</p>
+    ${rows.map((r, i) => `<div class="s-row"><span class="s-rank">${i + 1}</span>${sAv({ name: r.name, c: r.c, h: r.h })}<div class="s-who"><p class="s-name">${mEsc(r.name)}${r.h === mh ? ' (you)' : ''}</p><p class="s-sub">${r.posts} posts • ${r.likes} likes</p></div><b class="s-score">${r.score}</b></div>`).join('')}</div>`;
 }
 function shortsView() {
   const l = sPosts.filter(p => p.kind === 'short');
-  if (!l.length) return `<div class="text-center py-14 text-cloudMuted space-y-3 px-4"><p class="text-sm font-bold text-cloud">No shorts yet</p><p class="text-xs">Record a vertical clip or share a YouTube Short.</p><button onclick="openComposer('short')" class="px-4 py-2 rounded-xl bg-[#7CFF3A] text-black text-xs font-bold">Post a short</button></div>`;
+  if (!l.length) return `<div class="chrome s-empty"><p class="s-name">No shorts yet</p><p class="s-sub">Record a vertical clip or share a YouTube Short.</p><button onclick="openComposer('short')" class="s-chip"><span>Post a short</span></button></div>`;
   return `<div style="height:70vh;overflow-y:auto;scroll-snap-type:y mandatory" class="rounded-3xl space-y-3">${l.map(p => `<div style="height:70vh;scroll-snap-align:start" class="relative rounded-3xl overflow-hidden bg-black">${p.yt ? `<iframe class="w-full h-full" src="https://www.youtube.com/embed/${encodeURIComponent(p.yt)}?playsinline=1&rel=0" allowfullscreen></iframe>` : `<video data-m="${p.media}" data-short loop muted playsinline onclick="this.paused?this.play():this.pause()" class="w-full h-full object-contain"></video>`}<div class="absolute left-0 right-0 bottom-0 p-4 bg-gradient-to-t from-black/80 to-transparent pointer-events-none"><p class="text-sm font-bold text-white">@${mEsc(p.h)}</p><p class="text-xs text-white/90">${mEsc(p.text)}</p></div><div class="absolute right-3 bottom-20 flex flex-col gap-4 text-white text-xs text-center"><button onclick="toggleLike('${p.id}')">${p.likes.includes(me().h) ? '\u2665' : '\u2661'}<br>${p.likes.length}</button><button onclick="sharePost('${p.id}')">Share</button></div></div>`).join('')}</div>`;
 }
 function friendsView() {
   const row = p => `<div class="flex items-center gap-3 py-2">${avatar(p.name, p.c)}<div class="flex-1"><p class="text-sm font-bold text-cloud">${mEsc(p.name)}${p.demo ? ' <span class="text-[9px] px-1.5 py-0.5 rounded bg-graphite text-cloudMuted">TEST</span>' : ''}</p><p class="text-[11px] text-cloudMuted">@${mEsc(p.h)}${p.st === 'pending' ? ' \u2022 request saved, waiting for them to join' : ''}</p></div><button onclick="removePerson('${p.h}')" class="text-xs text-cloudMuted">Remove</button></div>`;
   const fr = people.filter(p => p.st === 'friend'), pe = people.filter(p => p.st === 'pending');
-  return `<div class="glass-panel rounded-3xl border border-graphiteBorder p-4 space-y-3"><h3 class="font-display font-bold text-base text-cloud">Add friends</h3>
-    <div class="flex gap-2"><input id="addHandle" placeholder="@handle" onkeydown="if(event.key==='Enter')addByHandle()" class="flex-1 bg-obsidian border border-graphiteBorder rounded-2xl px-4 py-2.5 text-sm text-cloud"><button onclick="addByHandle()" class="px-4 rounded-2xl bg-[#7CFF3A] text-black text-xs font-bold">Add</button></div>
-    <button onclick="inviteFriends()" class="w-full py-2.5 rounded-2xl bg-graphite border border-graphiteBorder text-xs font-bold text-cloud">Invite friends (your handle: @${mEsc(me().h)})</button></div>
-  <div class="glass-panel rounded-3xl border border-graphiteBorder p-4"><h3 class="font-display font-bold text-base text-cloud mb-1">Friends (${fr.length})</h3>${fr.length ? fr.map(row).join('') : '<p class="text-xs text-cloudMuted">No friends yet.</p>'}${pe.length ? `<h3 class="font-display font-bold text-sm text-cloud mt-3">Pending</h3>${pe.map(row).join('')}` : ''}</div>
-  <div class="rounded-3xl border border-dashed border-graphiteBorder p-4 text-xs text-cloudMuted space-y-2"><p>Friend accounts across devices need the online backend, which is not connected yet. To try the feed with other people in it, add test friends. You can remove them any time.</p><button onclick="${people.some(p => p.demo) ? 'removeTestFriends()' : 'addTestFriends()'}" class="px-3 py-2 rounded-xl bg-graphite border border-graphiteBorder font-bold text-cloud">${people.some(p => p.demo) ? 'Remove test friends' : 'Add 3 test friends'}</button></div>`;
+  return `<div class="chrome s-panel"><h3 class="font-display font-bold text-base text-cloud">Add friends</h3>
+    <div class="flex gap-2"><input id="addHandle" placeholder="@handle" onkeydown="if(event.key==='Enter')addByHandle()" class="inp flex-1 rounded-2xl px-4 py-2.5 text-sm"><button onclick="addByHandle()" class="s-chip"><span>Add</span></button></div>
+    <button onclick="inviteFriends()" class="s-chip s-wide"><span>Invite friends (your handle: @${mEsc(me().h)})</span></button></div>
+  <div class="chrome s-panel"><h3 class="font-display font-bold text-base text-cloud mb-1">Friends (${fr.length})</h3>${fr.length ? fr.map(row).join('') : '<p class="text-xs text-cloudMuted">No friends yet.</p>'}${pe.length ? `<h3 class="font-display font-bold text-sm text-cloud mt-3">Pending</h3>${pe.map(row).join('')}` : ''}</div>
+  <div class="chrome s-panel s-note"><p>Friend accounts across devices need the online backend, which is not connected yet. To try the feed with other people in it, add test friends. You can remove them any time.</p><button onclick="${people.some(p => p.demo) ? 'removeTestFriends()' : 'addTestFriends()'}" class="s-chip"><span>${people.some(p => p.demo) ? 'Remove test friends' : 'Add 3 test friends'}</span></button></div>`;
 }
 function renderSocial() {
   const r = document.getElementById('socialRoot'); if (!r) return;
-  const tab = (k, l) => `<button onclick="sView='${k}';renderSocial()" class="seg ${sView === k ? 'on' : ''}">${l}</button>`;
-  r.innerHTML = secTitle('SOCIAL', [['CONNECT.', '#7CFF3A'], ['SHARE.', '#a855f7'], ['VIBE.', '#fff']], '#a855f7') + `<div class="flex gap-2">${tab('feed', 'Feed')}${tab('shorts', 'Shorts')}${tab('friends', 'Friends')}</div>
-  <div class="space-y-4">${sView === 'feed' ? feedView() : sView === 'shorts' ? shortsView() : friendsView()}</div>`;
+  const T = [['feed', 'Feed', 'ph-users-three'], ['shorts', 'Explore', 'ph-play'], ['friends', 'Friends', 'ph-users'], ['leaders', 'Leaderboards', 'ph-trophy']];
+  const tab = ([k, l, ic]) => `<button onclick="sView='${k}';renderSocial()" class="${sView === k ? 'on' : ''}"><i class="ph-fill ${ic}"></i><span>${l}</span></button>`;
+  r.innerHTML = secTitle('SOCIAL', [['CONNECT.', '#7CFF3A'], ['SHARE.', '#a855f7'], ['VIBE.', '#fff']], '#a855f7') + `<nav class="chrome s-tabs">${T.map(tab).join('')}</nav>
+  <div class="s-stack">${sView === 'feed' ? feedView() : sView === 'shorts' ? shortsView() : sView === 'leaders' ? leadersView() : friendsView()}</div>`;
   r.querySelectorAll('[data-m]').forEach(async el => {
     try { const b = await idbGet(el.dataset.m); if (b) { el.src = URL.createObjectURL(b); if (el.hasAttribute('data-short')) io.observe(el); } } catch (e) {}
   });
@@ -223,4 +250,4 @@ function renderSocial() {
   updateHomeStats();
 }
 const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.play().catch(() => {}); else e.target.pause(); }), { threshold: 0.6 });
-document.addEventListener('DOMContentLoaded', () => { openOnboarding(); applyUserName(); renderSocial(); });
+document.addEventListener('DOMContentLoaded', () => { seedOfficial(); openOnboarding(); applyUserName(); renderSocial(); });
