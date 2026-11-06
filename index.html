@@ -195,7 +195,7 @@
           <div class="hero-smoke"></div><svg class="bolt tl" style="--c:#a855f7" viewBox="0 0 100 100"><polyline points="0,8 20,22 10,36 32,46 22,62 48,74 42,92"/><polyline points="32,46 54,40 62,54"/></svg><svg class="bolt br" style="--c:#7CFF3A" viewBox="0 0 100 100"><polyline points="0,8 20,22 10,36 32,46 22,62 48,74 42,92"/><polyline points="32,46 54,40 62,54"/></svg>
           <svg class="absolute right-4 top-4 w-12 opacity-80" viewBox="0 0 100 70" fill="none" stroke="#a855f7" stroke-width="4" stroke-linejoin="round"><path d="M10 62L4 14l24 20L50 6l22 28 24-20-6 48z"/></svg>
           <div class="relative z-10 p-5 pt-8" style="padding-right:30%">
-            <div class="relative inline-block"><svg class="w-14 absolute" style="left:34%;top:-6px" viewBox="0 0 100 70" fill="none" stroke="#a855f7" stroke-width="5" stroke-linejoin="round"><path d="M10 62L4 14l24 20L50 6l22 28 24-20-6 48z"/></svg><h2 class="tr-title">TRAIN</h2></div>
+            <img src="header-train.png" alt="TRAIN" class="sec-img">
             <p class="tr-sub"><span>GET STRONGER.</span><br><span>BE GREATER.</span></p>
             <button id="startBtn" onclick="startWorkout()" class="gbtn w-full mt-5" style="max-width:290px;justify-content:space-between"><span id="startTxt">Start Workout</span><i class="ph-bold ph-caret-right"></i></button>
           </div>
@@ -288,6 +288,7 @@
       <!-- TAB 6: PROFILE (IDENTITY & ACHIEVEMENTS)       -->
       <!-- ============================================== -->
       <section id="tab-profile" class="tab-content space-y-6">
+        <img src="header-profile.png" alt="Profile" class="sec-img">
         
         <!-- Profile Card -->
         <div class="glass-panel-elevated p-6 rounded-3xl border border-graphiteBorder relative overflow-hidden">
@@ -400,6 +401,9 @@
             <input type="checkbox" checked class="accent-neonPurple w-4 h-4 cursor-pointer">
           </div>
 
+          <button onclick="logOut()" class="w-full py-2.5 rounded-xl border border-white/15 text-white/80 text-xs font-bold hover:bg-white/5 transition-colors mb-2">
+            Log out
+          </button>
           <button onclick="resetAllDataConfirmation()" class="w-full py-2.5 rounded-xl border border-red-500/30 text-red-400 text-xs font-bold hover:bg-red-500/10 transition-colors">
             Reset Demo Data to Defaults
           </button>
@@ -516,6 +520,7 @@
   </div>
 
   <!-- Audio Synthesizer (Tone.js Fallback Web Audio) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
   <script src="01-boot.js"></script>
 
   <!-- ============================================== -->

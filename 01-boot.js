@@ -30,3 +30,8 @@
       setTimeout(() => playAudioTone(880, 'triangle', 0.2), 100);
     }
   
+
+/* ===== Supabase (accounts). The publishable key is public by design; never put a service_role key here. ===== */
+const SUPA_URL = 'https://netegdwqbzqugjbjtrnb.supabase.co';
+const SUPA_KEY = 'sb_publishable_9z0pmkU3lB-K2M3uz-iEvg_vMvs6HiX';
+const sb = (window.supabase && window.supabase.createClient) ? window.supabase.createClient(SUPA_URL, SUPA_KEY) : null;

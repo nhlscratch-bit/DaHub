@@ -25,34 +25,81 @@ function applyUserName() {
   set('homeName', n); set('profileName', n); set('profileHandle', '@' + me().h + ' \u2022 Member since ' + since);
   set('userHeaderAvatar', ini(n)); set('profileAvatar', ini(n));
 }
-function saveUserName() {
-  const n = document.getElementById('nameInput').value.trim();
-  const h = document.getElementById('handleInput').value.trim().toLowerCase().replace(/[^a-z0-9._]/g, '');
-  if (!n || h.length < 2) { document.getElementById('nameErr').textContent = 'Add a name and a handle (2+ characters).'; return; }
-  localStorage.setItem('dahub_name_v3', n); localStorage.setItem(SK.h, h);
-  document.getElementById('nameModal').remove(); applyUserName(); renderSocial();
+/* ---- Accounts (Supabase): sign up, log in, log out ---- */
+let authMode = 'signup';
+const authInp = 'w-full bg-black/40 border border-white/10 rounded-2xl px-4 py-4 text-[15px] text-white placeholder-white/35 text-left focus:outline-none focus:border-neonPurple focus:shadow-[0_0_0_3px_rgba(168,85,247,0.25)] transition';
+const authG = id => document.getElementById(id);
+function authMsg(t, ok) { const e = authG('authMsg'); if (e) { e.textContent = t || ''; e.className = 'text-xs min-h-[1rem] ' + (ok ? 'text-volt' : 'text-accentPink'); } }
+function authBusy(on) { const b = authG('authBtn'); if (!b) return; b.disabled = on; b.style.opacity = on ? '.6' : '1'; b.textContent = on ? 'Please wait...' : (authMode === 'signup' ? 'Create account' : 'Log in'); }
+const authNet = m => /load failed|failed to fetch|networkerror|fetch/i.test(m || '') ? "Can't reach DaHub servers. Check your connection and try again." : m;
+function authCard() {
+  const su = authMode === 'signup';
+  const tab = (m, l) => `<button onclick="setAuthMode('${m}')" class="flex-1 py-2.5 rounded-xl text-xs font-extrabold uppercase tracking-wider transition ${authMode === m ? 'bg-white/10 text-white' : 'text-white/45'}">${l}</button>`;
+  return `<div class="flex gap-1 p-1 rounded-2xl bg-black/40 mb-4">${tab('signup', 'Sign up')}${tab('login', 'Log in')}</div>
+    <p class="text-lg font-extrabold text-white">${su ? 'Create your account' : 'Welcome back'}</p>
+    <p class="text-xs text-white/50 mt-1 mb-4">${su ? 'Your name and handle are how people find you.' : 'Log in to pick up where you left off.'}</p>
+    <div class="space-y-3">
+      ${su ? `<input id="nameInput" maxlength="24" placeholder="Your name" oninput="const h=document.getElementById('handleInput');if(!h.dataset.t)h.value=this.value.toLowerCase().replace(/[^a-z0-9._]/g,'')" class="${authInp}">
+      <div class="relative"><span class="absolute left-4 top-1/2 -translate-y-1/2 text-volt font-bold">@</span><input id="handleInput" maxlength="20" placeholder="handle" autocapitalize="off" oninput="this.dataset.t=1" class="${authInp} !pl-9"></div>` : ''}
+      <input id="authEmail" type="email" inputmode="email" autocomplete="email" autocapitalize="off" placeholder="Email" class="${authInp}">
+      <input id="authPw" type="password" autocomplete="${su ? 'new-password' : 'current-password'}" placeholder="${su ? 'Password (8+ characters)' : 'Password'}" onkeydown="if(event.key==='Enter')submitAuth()" class="${authInp}">
+      <p id="authMsg" class="text-xs min-h-[1rem] text-accentPink"></p>
+      <button id="authBtn" onclick="submitAuth()" class="btn-chunky w-full py-4 rounded-2xl bg-gradient-to-r from-neonPurple via-violetHub to-volt text-obsidian font-display font-extrabold text-sm uppercase tracking-wider">${su ? 'Create account' : 'Log in'}</button>
+    </div>`;
 }
-function openOnboarding() {
-  const old = document.getElementById('nameModal'); if (old) old.remove();
-  if (localStorage.getItem('dahub_name_v3')) return;
+function setAuthMode(m) { authMode = m; const c = authG('authCard'); if (c) c.innerHTML = authCard(); }
+async function enterSession(user) {
+  let name = user.user_metadata && user.user_metadata.name, h = user.user_metadata && user.user_metadata.handle;
+  try { const { data } = await sb.from('profiles').select('name,handle').eq('id', user.id).maybeSingle(); if (data) { name = data.name; h = data.handle; } } catch (e) {}
+  localStorage.setItem('dahub_name_v3', name || 'You'); localStorage.setItem(SK.h, h || 'you');
+  const m = authG('nameModal'); if (m) m.remove();
+  applyUserName(); renderSocial();
+}
+async function submitAuth() {
+  if (!sb) { authMsg("Can't reach DaHub servers. Check your connection and reload."); return; }
+  const email = authG('authEmail').value.trim(), pw = authG('authPw').value, su = authMode === 'signup';
+  if (!/^\S+@\S+\.\S+$/.test(email)) { authMsg('Enter a valid email.'); return; }
+  authMsg('');
+  try {
+    if (su) {
+      const n = authG('nameInput').value.trim(), h = authG('handleInput').value.trim().toLowerCase().replace(/[^a-z0-9._]/g, '');
+      if (!n) { authMsg('Add your name.'); return; }
+      if (h.length < 2) { authMsg('Your handle needs 2+ characters.'); return; }
+      if (pw.length < 8) { authMsg('Password needs 8+ characters.'); return; }
+      authBusy(true);
+      const ex = await sb.from('profiles').select('id').eq('handle', h).maybeSingle();
+      if (ex.data) { authBusy(false); authMsg('That handle is taken. Try another.'); return; }
+      const { data, error } = await sb.auth.signUp({ email, password: pw, options: { data: { name: n, handle: h } } });
+      if (error) { authBusy(false); authMsg(/handle|profiles|database error/i.test(error.message) ? 'That handle is taken. Try another.' : authNet(error.message)); return; }
+      if (data.session) { await enterSession(data.user); return; }
+      authBusy(false); setAuthMode('login'); authMsg('Account created. Check your email to confirm it, then log in.', true);
+    } else {
+      authBusy(true);
+      const { data, error } = await sb.auth.signInWithPassword({ email, password: pw });
+      if (error) { authBusy(false); authMsg(/not confirmed/i.test(error.message) ? 'Confirm your email first, then log in.' : /invalid/i.test(error.message) ? 'Wrong email or password.' : authNet(error.message)); return; }
+      await enterSession(data.user);
+    }
+  } catch (e) { authBusy(false); authMsg("Something went wrong. Check your connection and try again."); }
+}
+async function logOut() {
+  try { if (sb) await sb.auth.signOut(); } catch (e) {}
+  ['dahub_name_v3', SK.h, 'dahub_since_v3'].forEach(k => localStorage.removeItem(k));
+  location.reload();
+}
+function showAuth() {
   const wm = document.querySelector('#splashScreen h1 img').src;
   const d = document.createElement('div'); d.id = 'nameModal';
   d.className = 'fixed inset-0 z-[45] bg-obsidian overflow-y-auto flex flex-col items-center justify-center p-6 text-center';
   d.style.background = 'radial-gradient(ellipse at 50% 22%,#33205f 0,#14111f 48%,#0b0b10 100%)';
-  const inp = 'w-full bg-black/40 border border-white/10 rounded-2xl px-4 py-4 text-[15px] text-white placeholder-white/35 text-left focus:outline-none focus:border-neonPurple focus:shadow-[0_0_0_3px_rgba(168,85,247,0.25)] transition';
   d.innerHTML = `<img src="${wm}" alt="DaHub" class="w-72 max-w-[85%] h-auto drop-shadow-[0_0_28px_rgba(168,85,247,0.55)]">
     <p class="text-[11px] tracking-[0.3em] text-white/60 font-bold mt-3">ONE HUB. EVERY SIDE OF LIFE.</p>
-    <div class="w-full max-w-sm mt-9 rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur p-5 text-left shadow-[0_20px_60px_rgba(0,0,0,0.5)]">
-      <p class="text-lg font-extrabold text-white">Create your profile</p>
-      <p class="text-xs text-white/50 mt-1 mb-4">Pick a name and a handle. This is how people find you.</p>
-      <div class="space-y-3">
-        <input id="nameInput" maxlength="24" placeholder="Your name" oninput="const h=document.getElementById('handleInput');if(!h.dataset.t)h.value=this.value.toLowerCase().replace(/[^a-z0-9._]/g,'')" class="${inp}">
-        <div class="relative"><span class="absolute left-4 top-1/2 -translate-y-1/2 text-volt font-bold">@</span><input id="handleInput" maxlength="20" placeholder="handle" oninput="this.dataset.t=1" class="${inp} !pl-9"></div>
-        <p id="nameErr" class="text-xs text-accentPink min-h-[1rem]"></p>
-        <button onclick="saveUserName()" class="btn-chunky w-full py-4 rounded-2xl bg-gradient-to-r from-neonPurple via-violetHub to-volt text-obsidian font-display font-extrabold text-sm uppercase tracking-wider">Enter DaHub</button>
-      </div>
-    </div>`;
+    <div class="w-full max-w-sm mt-8 rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur p-5 text-left shadow-[0_20px_60px_rgba(0,0,0,0.5)]"><div id="authCard">${authCard()}</div></div>`;
   document.body.appendChild(d);
+}
+async function openOnboarding() {
+  const old = authG('nameModal'); if (old) old.remove();
+  if (sb) { try { const { data } = await sb.auth.getSession(); if (data.session) { await enterSession(data.session.user); return; } } catch (e) {} }
+  showAuth();
 }
 
 /* ---- data actions ---- */

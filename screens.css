@@ -18,3 +18,24 @@
 .hscroll{display:flex;gap:12px;overflow-x:auto;padding-bottom:6px;scrollbar-width:none}.hscroll::-webkit-scrollbar{display:none}
 .breath{width:180px;height:180px;border-radius:50%;margin:20px auto;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle,#2b1747,#07070b 70%);border:3px solid #65C7F2;box-shadow:0 0 30px #65C7F2aa;transition:transform 4s ease-in-out;font:700 18px Inter,sans-serif;color:#fff}
 select.inp{appearance:none}
+
+/* ===== Chrome theme: silver/gunmetal base, purple + green as accents only ===== */
+.sec-img{display:block;width:min(78%,330px);height:auto;margin:2px 0 6px;filter:drop-shadow(0 4px 14px rgba(0,0,0,.6))}
+.neon{border:1px solid rgba(205,210,228,.30);box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 8px 22px rgba(0,0,0,.6),0 0 12px color-mix(in srgb,var(--c) 16%,transparent)}
+.chrome::before{background:conic-gradient(from 210deg,rgba(255,255,255,.5),rgba(255,255,255,.07) 30%,rgba(255,255,255,.6) 48%,rgba(255,255,255,.07) 64%,rgba(255,255,255,.4))}
+.dock-inner{box-shadow:inset 0 1px 0 rgba(255,255,255,.35),-6px 4px 18px rgba(168,85,247,.16),6px 4px 18px rgba(124,255,58,.12),0 6px 0 #000}
+.dock-inner::before{background:linear-gradient(90deg,#9b79d6,#d9dce8 30%,#d9dce8 70%,#86c860)}
+.xp-panel{border-color:rgba(205,210,228,.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 0 10px rgba(168,85,247,.14)}
+.ic-btn{border-color:rgba(205,210,228,.3)}
+.gbtn{background:linear-gradient(180deg,#2c2f3a,#07070a);border:1.5px solid #cfd3e2;box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 4px 14px rgba(0,0,0,.6),0 0 10px rgba(124,255,58,.22)}
+.gbtn i{color:#9dff6b}
+.hero-smoke{background:radial-gradient(ellipse 55% 70% at 85% 45%,rgba(168,85,247,.22),transparent 70%),radial-gradient(ellipse 40% 40% at 70% 90%,rgba(124,255,58,.07),transparent 70%)}
+.bolt{opacity:.4;filter:none}
+.seg{border-color:rgba(205,210,228,.25)}.seg.on{border-color:#cfd3e2;box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 0 10px rgba(124,255,58,.25)}
+.chipx{border-color:rgba(205,210,228,.3)}.chipx.on{box-shadow:0 0 8px color-mix(in srgb,var(--c) 35%,transparent)}
+.face{border-color:rgba(205,210,228,.28);box-shadow:none}.face.on{border-color:var(--c);box-shadow:0 0 10px color-mix(in srgb,var(--c) 45%,transparent)}
+.tile2 i{filter:none}.sec-tag span,.tr-sub span{text-shadow:none !important}
+/* ===== Layout fixes ===== */
+.xp-panel #hLvl{white-space:nowrap}
+.tile2{min-width:0;overflow:hidden;font-size:11px;letter-spacing:-.01em}
+#timerDisplay{font-size:22px !important}
