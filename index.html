@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>DaHub — One Hub. Every Side of Life.</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Syne & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Syne:wght@700;800;900&family=Permanent+Marker&family=Anton&display=swap" rel="stylesheet">
+  <!-- Phosphor Icons CDN -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            obsidian: '#101116',
+            graphite: '#1B1E28',
+            graphiteLight: '#242836',
+            graphiteBorder: '#2F3446',
+            cloud: '#F4F3F0',
+            cloudMuted: '#9DA3B4',
+            volt: '#B7F36B',
+            voltGlow: 'rgba(183, 243, 107, 0.35)',
+            violetHub: '#A78BFA',
+            neonPurple: '#D78BFF',
+            goldCrown: '#F5BE41',
+            accentPink: '#FF779D',
+            accentOrange: '#FF936B',
+            electricBlue: '#78A8FF',
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Syne', 'sans-serif'],
+          },
+          boxShadow: {
+            'glow-purple': '0 0 25px -4px rgba(215, 139, 255, 0.45)',
+            'glow-volt': '0 0 25px -4px rgba(183, 243, 107, 0.45)',
+            'glow-cyan': '0 0 25px -4px rgba(120, 168, 255, 0.4)',
+            'chunky': '0 8px 0 0 rgba(0,0,0,0.4)',
+            'chunky-sm': '0 4px 0 0 rgba(0,0,0,0.3)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-obsidian text-cloud font-sans antialiased min-h-screen selection:bg-neonPurple selection:text-obsidian overflow-x-hidden">
+
+  <!-- ========================================== -->
+  <!-- 1. SPLASH / BOOT EXPERIENCE (Bible Sec 5)  -->
+  <!-- ========================================== -->
+  <div id="splashScreen" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-obsidian transition-opacity duration-700 ease-out select-none">
+    <!-- Ambient Violet & Volt background halos -->
+    <div class="absolute w-[340px] h-[340px] md:w-[500px] md:h-[500px] bg-violetHub/15 rounded-full blur-[110px] pointer-events-none -top-10 -left-10"></div>
+    <div class="absolute w-[320px] h-[320px] md:w-[480px] md:h-[480px] bg-volt/15 rounded-full blur-[110px] pointer-events-none -bottom-10 -right-10"></div>
+
+    <div class="relative flex flex-col items-center justify-center p-6 text-center max-w-sm w-full z-10">
+      
+      <!-- Energy Orbital Rings Container -->
+      <div class="relative w-64 h-64 md:w-72 md:h-72 flex items-center justify-center mb-6">
+        
+        <!-- Outer Glowing Volt Trail Ring -->
+        <div class="absolute inset-0 rounded-full border-2 border-dashed border-volt/50 animate-orbit-cw shadow-[0_0_30px_rgba(183,243,107,0.3)]"></div>
+        
+        <!-- Inner Reverse Purple Energy Ring -->
+        <div class="absolute inset-3 rounded-full border-2 border-t-neonPurple border-r-transparent border-b-neonPurple border-l-transparent animate-orbit-ccw shadow-[0_0_35px_rgba(215,139,255,0.4)]"></div>
+
+        <!-- Dynamic Particle Accents -->
+        <div class="absolute -top-1 left-1/2 w-3 h-3 bg-volt rounded-full shadow-[0_0_12px_#B7F36B]"></div>
+        <div class="absolute -bottom-1 left-1/3 w-3 h-3 bg-neonPurple rounded-full shadow-[0_0_12px_#D78BFF]"></div>
+        
+        <!-- Crowned DH Monogram Vector Lockup -->
+        <div class="relative z-10 animate-floating-emblem flex flex-col items-center cursor-pointer" onclick="triggerEasterEggSound()">
+          
+          <!-- Crown Asset (SVG) -->
+          <svg class="w-16 h-12 -mb-2 filter drop-shadow-[0_4px_8px_rgba(245,190,65,0.7)]" viewBox="0 0 100 65" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 55L5 22L32 36L50 8L68 36L95 22L88 55H12Z" fill="url(#crownGold)" stroke="#FFF8D6" stroke-width="2" stroke-linejoin="round"/>
+            <circle cx="5" cy="20" r="5" fill="#FFE27A" stroke="#7C5200" stroke-width="1.5"/>
+            <circle cx="50" cy="7" r="6" fill="#FFE27A" stroke="#7C5200" stroke-width="1.5"/>
+            <circle cx="95" cy="20" r="5" fill="#FFE27A" stroke="#7C5200" stroke-width="1.5"/>
+            <rect x="10" y="52" width="80" height="9" rx="3" fill="#D49A1F" stroke="#FFE794" stroke-width="1.5"/>
+            <!-- Crown Jewels -->
+            <polygon points="50,47 45,55 50,60 55,55" fill="#9900FF" />
+            <polygon points="28,49 24,54 28,58 32,54" fill="#9900FF" />
+            <polygon points="72,49 68,54 72,58 76,54" fill="#9900FF" />
+            <defs>
+              <linearGradient id="crownGold" x1="50" y1="8" x2="50" y2="60" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#FFDE6A"/>
+                <stop offset="0.45" stop-color="#F5B82E"/>
+                <stop offset="1" stop-color="#9C6B03"/>
+              </linearGradient>
+            </defs>
+          </svg>
+
+          <img src="assets/logo-emblem.png" alt="DaHub crowned DH emblem" class="w-44 md:w-52 h-auto select-none drop-shadow-[0_0_22px_rgba(167,139,250,0.55)]">
+
+        </div>
+      </div>
+
+      <!-- Streetwear Brand Wordmark Tag -->
+      <div class="space-y-1">
+        <h1 class="flex justify-center"><img src="assets/logo-wordmark.png" alt="DaHub" class="w-64 h-auto select-none"></h1>
+        <p class="text-xs uppercase tracking-[0.28em] text-cloudMuted font-bold flex items-center justify-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-volt shadow-[0_0_6px_#B7F36B]"></span>
+          ONE HUB. EVERY SIDE OF LIFE.
+          <span class="w-2 h-2 rounded-full bg-violetHub shadow-[0_0_6px_#A78BFA]"></span>
+        </p>
+      </div>
+
+      <!-- Action Buttons / Skip -->
+      <div class="mt-8 flex flex-col gap-3 w-full">
+        <button onclick="enterApplication()" class="btn-chunky w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-neonPurple via-violetHub to-volt text-obsidian font-display font-extrabold text-sm uppercase tracking-wider shadow-chunky shadow-volt/20 hover:brightness-110 active:translate-y-1">
+          Enter Experience
+        </button>
+        <button onclick="enterApplication()" class="text-xs text-cloudMuted/80 hover:text-cloud transition-colors py-1">
+          Skip Intro
+        </button>
+      </div>
+
+      <!-- Loading Pulse Bar -->
+      <div class="w-48 h-1.5 bg-graphite rounded-full mt-6 overflow-hidden">
+        <div id="splashProgressBar" class="h-full bg-gradient-to-r from-volt to-neonPurple transition-all duration-1000 w-0"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 2. MAIN APP SHELL CONTAINER               -->
+  <!-- ========================================== -->
+  <div id="appShell" class="relative max-w-md mx-auto md:max-w-2xl lg:max-w-4xl min-h-screen flex flex-col bg-obsidian border-x border-graphiteBorder/40 shadow-2xl pb-24">
+    
+    <!-- TOP NAVIGATION BAR (Header) -->
+    <header id="dhHeader" class="relative z-40 px-3 pb-2" style="padding-top:calc(env(safe-area-inset-top,0px) + 10px)">
+      <div class="flex items-start gap-2">
+        <div class="hdr-logo shrink-0 cursor-pointer" onclick="switchTab('home')"><img data-brand="wm" alt="DaHub" class="w-full h-auto drop-shadow-[0_0_14px_rgba(167,139,250,.55)]"><p class="hdr-tag">ONE HUB. <b>EVERY SIDE</b> OF LIFE.</p></div>
+        <div class="xp-panel">
+          <div class="relative w-[50px] h-[50px] shrink-0"><svg viewBox="0 0 60 60" class="absolute inset-0"><circle cx="30" cy="30" r="26" fill="none" stroke="#2a1647" stroke-width="5"/><circle id="hRing" cx="30" cy="30" r="26" fill="none" stroke="#7CFF3A" stroke-width="5" stroke-linecap="round" stroke-dasharray="163.4" stroke-dashoffset="163.4" transform="rotate(-90 30 30)" style="transition:stroke-dashoffset 1s;filter:drop-shadow(0 0 4px #7CFF3A)"/></svg><img data-brand="emb" alt="" class="absolute inset-[9px] w-[32px] h-[32px] object-contain"></div>
+          <div class="min-w-0 flex-1"><p class="text-[10px] font-bold text-white/80 leading-none">XP</p><p class="font-display font-extrabold text-[20px] text-white leading-tight"><span id="headerXpDisplay">0</span></p><p id="hLvl" class="text-[11px] font-bold hl leading-none">Level 1</p><div class="bar-t mt-1" style="height:5px"><i id="hBar" style="width:0%"></i></div></div>
+          <button class="ic-btn" id="bellBtn" onclick="openNotifs()" aria-label="Notifications"><i class="ph-fill ph-bell"></i><span id="bellBadge" class="badge" style="display:none">0</span></button>
+          <button class="ic-btn" onclick="openSoon('messages')" aria-label="Messages"><i class="ph-bold ph-chat-dots"></i></button>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN BODY TABS WRAPPER -->
+    <main class="flex-1 p-4 md:p-6 overflow-y-auto">
+
+      <!-- ============================================== -->
+      <!-- TAB 1: HOME SCREEN (Personal Lifestyle HQ)     -->
+      <!-- ============================================== -->
+      <section id="tab-home" class="tab-content active space-y-4">
+        <div class="hero chrome">
+          <div class="hero-smoke"></div>
+          <svg class="absolute right-4 top-4 w-14 opacity-70" viewBox="0 0 100 70" fill="none" stroke="#a855f7" stroke-width="4" stroke-linejoin="round"><path d="M10 62L4 14l24 20L50 6l22 28 24-20-6 48z"/></svg>
+          <div class="relative z-10 p-5 pr-[16%]">
+            <p class="hero-wb">Welcome Back,</p>
+            <h2 id="homeName" class="hero-name mt-1">there</h2>
+            <p class="text-[15px] text-white/85 mt-3 flex items-center gap-2">Let&rsquo;s get it, gang. <svg class="w-6" viewBox="0 0 100 70" fill="#a855f7"><path d="M10 62L4 14l24 20L50 6l22 28 24-20-6 48z"/></svg></p>
+            <button class="cta" onclick="switchTab('train')"><span>Continue Your Journey</span><i class="ph-bold ph-arrow-right text-[#7CFF3A] text-lg"></i></button>
+          </div>
+        </div>
+        <div class="grid grid-cols-5 gap-2"><button class="tile chrome" style="--a:#a855f7;--g:rgba(168,85,247,.35);animation-delay:0ms" onclick="goTile('train')"><i class="ph-fill ph-barbell"></i><span>Train</span></button><button class="tile chrome" style="--a:#2ea8ff;--g:rgba(46,168,255,.3);animation-delay:40ms" onclick="goTile('mind')"><i class="ph-fill ph-brain"></i><span>Mind</span></button><button class="tile chrome" style="--a:#f5c23a;--g:rgba(245,194,58,.3);animation-delay:80ms" onclick="goTile('money')"><i class="ph-fill ph-currency-dollar"></i><span>Money</span></button><button class="tile chrome" style="--a:#6d3bff;--g:rgba(109,59,255,.35);animation-delay:120ms" onclick="goTile('arcade')"><i class="ph-fill ph-game-controller"></i><span>Arcade</span></button><button class="tile chrome" style="--a:#ff3d9a;--g:rgba(255,61,154,.3);animation-delay:160ms" onclick="goTile('social')"><i class="ph-fill ph-users-three"></i><span>Social</span></button><button class="tile chrome" style="--a:#ff6a2b;--g:rgba(255,106,43,.3);animation-delay:200ms" onclick="goTile('media')"><i class="ph-fill ph-play"></i><span>Media</span></button><button class="tile chrome" style="--a:#5cff3a;--g:rgba(92,255,58,.3);animation-delay:240ms" onclick="goTile('pet')"><i class="ph-fill ph-paw-print"></i><span>Pet</span></button><button class="tile chrome" style="--a:#9b87ff;--g:rgba(155,135,255,.3);animation-delay:280ms" onclick="goTile('journal')"><i class="ph-fill ph-notebook"></i><span>Journal</span></button><button class="tile chrome" style="--a:#3d8bff;--g:rgba(61,139,255,.35);animation-delay:320ms" onclick="goTile('ask')"><i class="ph-fill ph-sparkle"></i><span>Ask AI</span></button><button class="tile chrome" style="--a:#d4d7e2;--g:rgba(212,215,226,.15);animation-delay:360ms" onclick="goTile('more')"><i class="ph-fill ph-dots-nine"></i><span>More</span></button></div>
+        <div class="grid grid-cols-5 gap-3">
+          <div class="chrome col-span-3 p-3" style="--a:#a855f7;--b:#2ea8ff">
+            <div class="flex items-center justify-between mb-2"><p class="flex items-center gap-2 font-display font-bold text-[15px] text-white"><i class="ph-fill ph-chart-bar text-neonPurple"></i>Your Stats</p><button onclick="switchTab('train')" class="text-[11px] font-bold hl">View All &rarr;</button></div>
+            <div class="grid grid-cols-3 gap-1"><div class="flex flex-col items-center"><div class="relative"><svg class="ring-svg" viewBox="0 0 80 80"><circle cx="40" cy="40" r="32" stroke="#1b1b25" stroke-dasharray="150.8 201"/><circle id="r_sets" class="pr" cx="40" cy="40" r="32" stroke="#a855f7" stroke-dasharray="150.8 201" stroke-dashoffset="150.8" style="filter:drop-shadow(0 0 4px #a855f7)"/></svg><i class="ph-bold ph-barbell absolute left-1/2 -translate-x-1/2 top-[14px] text-lg" style="color:#a855f7"></i></div><p id="v_sets" class="font-display font-extrabold text-[19px] text-white -mt-5">0</p><p class="text-[11px] text-white/70">Sets</p></div><div class="flex flex-col items-center"><div class="relative"><svg class="ring-svg" viewBox="0 0 80 80"><circle cx="40" cy="40" r="32" stroke="#1b1b25" stroke-dasharray="150.8 201"/><circle id="r_vol" class="pr" cx="40" cy="40" r="32" stroke="#7CFF3A" stroke-dasharray="150.8 201" stroke-dashoffset="150.8" style="filter:drop-shadow(0 0 4px #7CFF3A)"/></svg><i class="ph-bold ph-trend-up absolute left-1/2 -translate-x-1/2 top-[14px] text-lg" style="color:#7CFF3A"></i></div><p id="v_vol" class="font-display font-extrabold text-[19px] text-white -mt-5">0</p><p class="text-[11px] text-white/70">Volume lb</p></div><div class="flex flex-col items-center"><div class="relative"><svg class="ring-svg" viewBox="0 0 80 80"><circle cx="40" cy="40" r="32" stroke="#1b1b25" stroke-dasharray="150.8 201"/><circle id="r_posts" class="pr" cx="40" cy="40" r="32" stroke="#2ea8ff" stroke-dasharray="150.8 201" stroke-dashoffset="150.8" style="filter:drop-shadow(0 0 4px #2ea8ff)"/></svg><i class="ph-bold ph-pencil-simple absolute left-1/2 -translate-x-1/2 top-[14px] text-lg" style="color:#2ea8ff"></i></div><p id="v_posts" class="font-display font-extrabold text-[19px] text-white -mt-5">0</p><p class="text-[11px] text-white/70">Posts</p></div></div></div>
+          <div class="chrome col-span-2 p-3 overflow-hidden" style="--a:#a855f7;--b:#7CFF3A">
+            <div class="absolute -right-3 -top-2 text-[64px] leading-none text-[#f5c23a] drop-shadow-[0_0_14px_rgba(168,85,247,.9)]"><i class="ph-fill ph-trophy"></i></div>
+            <p class="flex items-center gap-1.5 text-[#ff8a2b] font-bold text-sm relative"><i class="ph-fill ph-fire text-2xl drop-shadow-[0_0_8px_#ff6a00]"></i>Streak</p>
+            <p id="stkDays" class="font-display font-black italic text-[24px] text-white mt-1 relative">0 Days</p>
+            <p id="stkMsg" class="text-[11px] text-white/70 mt-1 relative">Log a set or post to start.</p>
+            <div class="bar-t mt-3 relative"><i id="stkBar" style="width:0%"></i></div></div>
+        </div>
+        <div class="chrome p-3" style="--a:#a855f7;--b:#7CFF3A;--g:rgba(124,255,58,.25)">
+          <div class="flex items-center justify-between mb-2"><p class="flex items-center gap-2 font-display font-bold text-[16px] text-white"><i class="ph-fill ph-users-three text-neonPurple"></i>DaHub Social</p><button onclick="switchTab('social')" class="text-[12px] font-bold hl">See More &rarr;</button></div>
+          <div id="homeSocial" class="rounded-2xl bg-black/50 p-3"></div></div>
+      </section>
+
+
+      <!-- ============================================== -->
+      <!-- TAB 2: TRAIN (FITNESS & GYM MODULE)            -->
+      <!-- ============================================== -->
+      <section id="tab-train" class="tab-content space-y-4">
+        <div class="chrome relative overflow-hidden" style="min-height:290px;border-radius:26px;--a:#a855f7;--b:#7CFF3A">
+          <div class="hero-smoke"></div><svg class="bolt tl" style="--c:#a855f7" viewBox="0 0 100 100"><polyline points="0,8 20,22 10,36 32,46 22,62 48,74 42,92"/><polyline points="32,46 54,40 62,54"/></svg><svg class="bolt br" style="--c:#7CFF3A" viewBox="0 0 100 100"><polyline points="0,8 20,22 10,36 32,46 22,62 48,74 42,92"/><polyline points="32,46 54,40 62,54"/></svg>
+          <svg class="absolute right-4 top-4 w-12 opacity-80" viewBox="0 0 100 70" fill="none" stroke="#a855f7" stroke-width="4" stroke-linejoin="round"><path d="M10 62L4 14l24 20L50 6l22 28 24-20-6 48z"/></svg>
+          <div class="relative z-10 p-5 pt-8" style="padding-right:30%">
+            <div class="relative inline-block"><svg class="w-14 absolute" style="left:34%;top:-6px" viewBox="0 0 100 70" fill="none" stroke="#a855f7" stroke-width="5" stroke-linejoin="round"><path d="M10 62L4 14l24 20L50 6l22 28 24-20-6 48z"/></svg><h2 class="tr-title">TRAIN</h2></div>
+            <p class="tr-sub"><span>GET STRONGER.</span><br><span>BE GREATER.</span></p>
+            <button id="startBtn" onclick="startWorkout()" class="gbtn w-full mt-5" style="max-width:290px;justify-content:space-between"><span id="startTxt">Start Workout</span><i class="ph-bold ph-caret-right"></i></button>
+          </div>
+        </div>
+        <div class="chrome flex items-stretch py-3 px-1" style="--a:#a855f7;--b:#7CFF3A"><div class="flex-1 text-center px-1"><i class="ph-fill ph-barbell text-3xl" style="color:#a855f7;filter:drop-shadow(0 0 6px #a855f7)"></i><p class="text-[11px] font-bold text-white/85 uppercase mt-1 tracking-wide">Workouts</p><p id="stW" class="font-display font-extrabold text-[22px] text-white leading-tight">0</p></div><div class="w-px self-stretch bg-white/15 my-2"></div><div class="flex-1 text-center px-1"><i class="ph-fill ph-trend-up text-3xl" style="color:#ff9a2b;filter:drop-shadow(0 0 6px #ff9a2b)"></i><p class="text-[11px] font-bold text-white/85 uppercase mt-1 tracking-wide">Volume lb</p><p id="stV" class="font-display font-extrabold text-[22px] text-white leading-tight">0</p></div><div class="w-px self-stretch bg-white/15 my-2"></div><div class="flex-1 text-center px-1"><i class="ph-fill ph-timer text-3xl" style="color:#2ea8ff;filter:drop-shadow(0 0 6px #2ea8ff)"></i><p class="text-[11px] font-bold text-white/85 uppercase mt-1 tracking-wide">Active Time</p><p id="stA" class="font-display font-extrabold text-[22px] text-white leading-tight">0</p></div><div class="w-px self-stretch bg-white/15 my-2"></div><div class="flex-1 text-center px-1"><i class="ph-fill ph-chart-bar text-3xl" style="color:#a855f7;filter:drop-shadow(0 0 6px #a855f7)"></i><p class="text-[11px] font-bold text-white/85 uppercase mt-1 tracking-wide">This Week</p><p id="stWk" class="font-display font-extrabold text-[22px] text-white leading-tight">0</p></div></div>
+        <div class="chrome relative overflow-hidden p-4" style="--a:#a855f7;--b:#7CFF3A"><svg class="bolt tl" style="--c:#a855f7" viewBox="0 0 100 100"><polyline points="0,8 20,22 10,36 32,46 22,62 48,74 42,92"/><polyline points="32,46 54,40 62,54"/></svg><svg class="bolt bl" style="--c:#7CFF3A" viewBox="0 0 100 100"><polyline points="0,8 20,22 10,36 32,46 22,62 48,74 42,92"/><polyline points="32,46 54,40 62,54"/></svg>
+          <div class="relative z-10 flex items-center justify-between gap-2">
+            <div class="min-w-0"><p class="ttl text-[28px] leading-none">Rest Time</p><div class="h-[3px] w-16 mt-2 rounded bg-[#7CFF3A] shadow-[0_0_8px_#7CFF3A] -skew-x-12"></div><p class="text-[12px] text-[#9d8bff] italic mt-2">Next Set In...</p></div>
+            <div class="tring" onclick="toggleTimer()"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="52" stroke="#2a1647"/><circle id="tRing" cx="60" cy="60" r="52" stroke="#7CFF3A" stroke-dasharray="326.7" stroke-dashoffset="0" style="transition:stroke-dashoffset .9s linear;filter:drop-shadow(0 0 6px #7CFF3A)"/></svg><div class="tv"><i id="timerIcon" class="ph-fill ph-play text-lg" style="color:#a855f7"></i><span id="timerDisplay" class="font-display font-black text-[30px] text-white leading-none">01:30</span></div></div>
+            <div class="flex flex-col gap-2.5 w-[92px] shrink-0"><button onclick="resetTimer()" class="pbtn">Skip <i class="ph-bold ph-caret-double-right"></i></button><button onclick="endSet()" class="gbtn" style="padding:10px 8px;font-size:13px">End Set <i class="ph-bold ph-check"></i></button></div>
+          </div>
+        </div>
+        <div id="logCard" class="chrome relative overflow-hidden" style="--a:#a855f7;--b:#7CFF3A;border-radius:26px"><svg class="bolt tr" style="--c:#a855f7" viewBox="0 0 100 100"><polyline points="0,8 20,22 10,36 32,46 22,62 48,74 42,92"/><polyline points="32,46 54,40 62,54"/></svg><svg class="bolt bl" style="--c:#7CFF3A" viewBox="0 0 100 100"><polyline points="0,8 20,22 10,36 32,46 22,62 48,74 42,92"/><polyline points="32,46 54,40 62,54"/></svg>
+          <div class="relative z-10 flex items-center justify-between px-4 pt-4 pb-3">
+            <p class="ttl text-[26px] flex items-center gap-3 leading-none"><i class="ph-fill ph-barbell text-[#a855f7] text-3xl" style="-webkit-text-fill-color:#a855f7;filter:drop-shadow(0 0 8px #a855f7)"></i>Log Exercise Set</p>
+            <button type="button" onclick="toggleCalc()" class="flex items-center gap-2 text-[12px] font-semibold text-[#a78bfa]"><span>Auto-Calculate</span><span id="calcTgl" class="tgl on"></span></button>
+          </div>
+          <form id="workoutLogForm" onsubmit="handleLogWorkout(event)" class="relative z-10 mx-3 mb-3 p-3 rounded-2xl bg-black/60 border border-white/10 space-y-3">
+            <div class="flex gap-3 items-end">
+              <div class="w-[76px] h-[76px] rounded-xl shrink-0 flex items-center justify-center" style="background:linear-gradient(160deg,#4a4d5a,#0b0b10);border:1px solid rgba(255,255,255,.2);box-shadow:inset 0 1px 0 rgba(255,255,255,.3)"><i class="ph-fill ph-person-arms-spread text-[40px] text-white/70"></i></div>
+              <div class="flex-1 min-w-0"><label class="lbl">Exercise Name</label><div class="relative"><input id="exerciseInput" list="exList" required placeholder="e.g. Incline Dumbbell Press" class="inp pr-9" autocomplete="off"><i class="ph-bold ph-caret-down absolute right-3 top-1/2 -translate-y-1/2 text-white pointer-events-none"></i></div><datalist id="exList"><option value="Bench Press"><option value="Incline Dumbbell Press"><option value="Squat"><option value="Deadlift"><option value="Overhead Press"><option value="Barbell Row"><option value="Pull-Up"><option value="Lat Pulldown"><option value="Bicep Curl"><option value="Tricep Pushdown"><option value="Leg Press"><option value="Romanian Deadlift"><option value="Lunges"><option value="Dips"></datalist></div>
+            </div>
+            <div class="grid grid-cols-3 gap-2.5">
+              <div><label class="lbl">Weight (lbs/kg)</label><div class="fld"><i class="ph-fill ph-barbell text-[#a855f7] text-xl"></i><input id="weightInput" type="number" inputmode="decimal" required placeholder="185" oninput="calcPrev()"></div></div>
+              <div><label class="lbl">Reps</label><div class="fld"><i class="ph-bold ph-arrows-clockwise text-[#a855f7] text-xl"></i><input id="repsInput" type="number" inputmode="numeric" required placeholder="10" oninput="calcPrev()"></div></div>
+              <div><label class="lbl">RPE (1-10)</label><div class="fld"><i class="ph-fill ph-chart-bar text-[#a855f7] text-xl"></i><input id="rpeInput" type="number" min="1" max="10" step="0.5" placeholder="8.5"></div></div>
+            </div>
+            <p id="calcPrev" class="text-center text-xs text-[#7CFF3A] min-h-[1rem]"></p>
+            <button type="submit" class="gbtn mx-auto" style="min-width:60%"><i class="ph-bold ph-plus"></i> Add Set</button>
+          </form>
+        </div>
+        <div class="chrome relative overflow-hidden p-4" style="--a:#a855f7;--b:#7CFF3A">
+          <div class="flex items-center justify-between mb-3"><p class="ttl text-[22px] leading-none">Completed Sets</p><span id="totalWorkoutVolume" class="text-xs font-bold text-[#7CFF3A]">Volume: 0 lbs</span></div>
+          <div id="workoutList" class="space-y-2.5"></div>
+        </div>
+        <div class="grid grid-cols-3 gap-3">
+          <div class="chrome p-3 text-center" style="--a:#a855f7"><p class="text-[10px] text-white/60 font-bold uppercase">Bench PR</p><p id="prBench" class="font-display font-black text-white text-lg">&mdash;</p></div>
+          <div class="chrome p-3 text-center" style="--a:#a855f7"><p class="text-[10px] text-white/60 font-bold uppercase">Squat PR</p><p id="prSquat" class="font-display font-black text-white text-lg">&mdash;</p></div>
+          <div class="chrome p-3 text-center" style="--a:#a855f7"><p class="text-[10px] text-white/60 font-bold uppercase">Deadlift PR</p><p id="prDead" class="font-display font-black text-white text-lg">&mdash;</p></div>
+        </div>
+        <div class="chrome relative overflow-hidden flex items-center gap-3 p-3" style="--a:#f5c23a;--b:#a855f7;border-radius:26px"><svg class="bolt tr" style="--c:#7CFF3A" viewBox="0 0 100 100"><polyline points="0,8 20,22 10,36 32,46 22,62 48,74 42,92"/><polyline points="32,46 54,40 62,54"/></svg>
+          <i class="ph-fill ph-trophy text-[58px] text-[#f5c23a] shrink-0" style="filter:drop-shadow(0 0 10px rgba(245,194,58,.8))"></i>
+          <div class="flex-1 min-w-0 relative z-10"><p class="ttl text-[24px] leading-none">Complete Workout</p><p id="claimMsg" class="text-[12px] text-white/70 mt-1">Earn XP &bull; Unlock Rewards</p></div>
+          <button onclick="claimXp()" class="pbtn relative z-10 shrink-0" style="border-color:#7CFF3A;box-shadow:0 0 14px rgba(124,255,58,.5),inset 0 0 12px rgba(168,85,247,.3)">Claim XP <i class="ph-bold ph-caret-double-right"></i></button>
+        </div>
+      </section>
+
+
+      <!-- ============================================== -->
+      <!-- TAB 3: MEDIA (YOUTUBE DATA HUB MVP)            -->
+      <!-- ============================================== -->
+      <section id="tab-media" class="tab-content space-y-6">
+        
+        <!-- Media Header -->
+        <div class="glass-panel-elevated p-5 rounded-3xl border border-graphiteBorder">
+          <div class="flex items-center justify-between mb-2">
+            <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-accentOrange/15 text-accentOrange text-xs font-bold border border-accentOrange/30">
+              <i class="ph-bold ph-youtube-logo"></i> MEDIA & VIDEO DISCOVERY
+            </div>
+            <span class="text-xs text-cloudMuted flex items-center gap-1">
+              <i class="ph-fill ph-check-circle text-volt"></i> Powered by YouTube API
+            </span>
+          </div>
+          <h2 class="font-display font-extrabold text-2xl text-white">YouTube</h2>
+          <p class="text-xs text-cloudMuted mt-1">Search anything, paste a video link, or browse. Watch right inside DaHub.</p>
+
+          <!-- Search Input Bar -->
+          <div class="mt-4 relative">
+            <i class="ph ph-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-cloudMuted text-lg"></i>
+            <input type="text" id="mediaSearchInput" oninput="document.getElementById('clearSearchBtn').classList.toggle('hidden',!this.value.trim())" onkeydown="if(event.key==='Enter')handleMediaSearch(this.value)" placeholder="Search YouTube or paste a video link..." class="w-full bg-obsidian border border-graphiteBorder rounded-2xl pl-10 pr-4 py-3 text-sm text-cloud focus:outline-none focus:border-accentOrange placeholder:text-cloudMuted/60">
+            <button onclick="clearMediaSearch()" id="clearSearchBtn" class="hidden absolute right-3.5 top-1/2 -translate-y-1/2 text-xs text-cloudMuted hover:text-white">
+              Clear
+            </button>
+          </div>
+
+          <!-- Filter Pills -->
+          <div class="flex items-center gap-2 mt-3 overflow-x-auto pb-1 scrollbar-none" id="mediaCategoryPills"><button onclick="filterMediaCategory('trending',this)" class="media-pill active px-3.5 py-1.5 rounded-xl text-xs font-bold bg-accentOrange text-obsidian whitespace-nowrap transition-all">Trending</button><button onclick="filterMediaCategory('music',this)" class="media-pill px-3.5 py-1.5 rounded-xl text-xs font-bold bg-graphite text-cloudMuted hover:text-white border border-graphiteBorder whitespace-nowrap transition-all">Music</button><button onclick="filterMediaCategory('gaming',this)" class="media-pill px-3.5 py-1.5 rounded-xl text-xs font-bold bg-graphite text-cloudMuted hover:text-white border border-graphiteBorder whitespace-nowrap transition-all">Gaming</button><button onclick="filterMediaCategory('news',this)" class="media-pill px-3.5 py-1.5 rounded-xl text-xs font-bold bg-graphite text-cloudMuted hover:text-white border border-graphiteBorder whitespace-nowrap transition-all">News</button><button onclick="filterMediaCategory('learn',this)" class="media-pill px-3.5 py-1.5 rounded-xl text-xs font-bold bg-graphite text-cloudMuted hover:text-white border border-graphiteBorder whitespace-nowrap transition-all">Learn</button><button onclick="filterMediaCategory('saved',this)" class="media-pill px-3.5 py-1.5 rounded-xl text-xs font-bold bg-graphite text-cloudMuted hover:text-white border border-graphiteBorder whitespace-nowrap transition-all">Saved (<span id="watchlistCount">0</span>)</button>
+          </div>
+        </div>
+
+        <!-- Video Grid Container -->
+        <div id="mediaGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Videos dynamically rendered by JS -->
+        </div>
+
+      </section>
+
+
+      <!-- ============================================== -->
+      <!-- TAB 4: SOCIAL (MVP FEED & INTERACTION)         -->
+      <!-- ============================================== -->
+      <section id="tab-social" class="tab-content space-y-4"><div id="socialRoot"></div></section>
+
+
+      <!-- ============================================== -->
+      <!-- TAB 5: ASK AI (LIFESTYLE & TRAINING ASSISTANT)  -->
+      <!-- ============================================== -->
+      <section id="tab-ask" class="tab-content space-y-4">
+        
+        <!-- AI Header Banner -->
+        <div class="glass-panel-elevated p-4 md:p-5 rounded-3xl border border-graphiteBorder flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-2xl bg-electricBlue/20 text-electricBlue border border-electricBlue/40 flex items-center justify-center text-2xl shadow-glow-cyan">
+              <i class="ph-fill ph-brain"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-1.5">
+                <h2 class="font-display font-extrabold text-xl text-white">DaHub AI Core</h2>
+                <span class="w-2 h-2 rounded-full bg-volt animate-ping"></span>
+              </div>
+              <p class="text-xs text-cloudMuted">Trained on gym biomechanics, macro nutrition & streetwear aesthetics.</p>
+            </div>
+          </div>
+          <button onclick="clearAiChat()" class="text-xs text-cloudMuted hover:text-white px-2.5 py-1 rounded-lg bg-graphite border border-graphiteBorder">
+            Clear
+          </button>
+        </div>
+
+        <!-- Preset Suggested Prompts -->
+        <div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+          <button onclick="useAiPreset('Plan a 4-day chest and arm hypertrophy split with deload weeks')" class="text-xs px-3 py-1.5 rounded-xl bg-graphite border border-graphiteBorder text-cloudMuted hover:text-electricBlue hover:border-electricBlue whitespace-nowrap transition-all">
+            💪 4-Day Hypertrophy Split
+          </button>
+          <button onclick="useAiPreset('What are the best sneaker drops to pair with dark cargo streetwear?')" class="text-xs px-3 py-1.5 rounded-xl bg-graphite border border-graphiteBorder text-cloudMuted hover:text-electricBlue hover:border-electricBlue whitespace-nowrap transition-all">
+            👟 Streetwear & Sneaker Style
+          </button>
+          <button onclick="useAiPreset('How to hit 180g protein on a 2200 kcal budget without protein shakes?')" class="text-xs px-3 py-1.5 rounded-xl bg-graphite border border-graphiteBorder text-cloudMuted hover:text-electricBlue hover:border-electricBlue whitespace-nowrap transition-all">
+            🥩 180g Protein Meal Blueprint
+          </button>
+        </div>
+
+        <!-- Chat History Window -->
+        <div id="aiChatWindow" class="glass-panel p-4 rounded-3xl border border-graphiteBorder h-[420px] overflow-y-auto space-y-4">
+          <!-- Default AI Welcome Bubble -->
+          <div class="flex items-start gap-3">
+            <div class="w-8 h-8 rounded-xl bg-electricBlue/20 text-electricBlue flex-shrink-0 flex items-center justify-center font-bold text-xs">
+              AI
+            </div>
+            <div class="bg-graphiteLight p-3.5 rounded-2xl rounded-tl-sm text-xs text-cloud leading-relaxed max-w-[85%] border border-graphiteBorder">
+              Yo! I am your DaHub intelligence module. Ask me anything about heavy lifts, form checks, macro nutrition splits, or tailoring your lifestyle aesthetic. What are we working on today?
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Input Form -->
+        <form onsubmit="handleSendAiMessage(event)" class="relative flex items-center gap-2">
+          <input type="text" id="aiInputPrompt" required placeholder="Ask about lifting form, diet, streetwear fits..." class="w-full bg-graphite border border-graphiteBorder rounded-2xl pl-4 pr-12 py-3.5 text-sm text-cloud focus:outline-none focus:border-electricBlue placeholder:text-cloudMuted/60">
+          <button type="submit" id="aiSendBtn" class="absolute right-2.5 top-1/2 -translate-y-1/2 w-9 h-9 rounded-xl bg-electricBlue text-obsidian flex items-center justify-center font-bold hover:brightness-110 active:scale-95 transition-all">
+            <i class="ph-bold ph-paper-plane-tilt text-base"></i>
+          </button>
+        </form>
+
+      </section>
+
+
+      <!-- ============================================== -->
+      <!-- TAB 6: PROFILE (IDENTITY & ACHIEVEMENTS)       -->
+      <!-- ============================================== -->
+      <section id="tab-profile" class="tab-content space-y-6">
+        
+        <!-- Profile Card -->
+        <div class="glass-panel-elevated p-6 rounded-3xl border border-graphiteBorder relative overflow-hidden">
+          <div class="flex flex-col sm:flex-row items-center sm:items-start gap-5">
+            <!-- Profile Avatar with Crown Monogram Overlay -->
+            <div class="relative">
+              <div class="w-24 h-24 rounded-3xl bg-gradient-to-tr from-volt via-neonPurple to-violetHub p-1 shadow-glow-purple">
+                <div id="profileAvatar" class="w-full h-full rounded-[22px] bg-graphite flex items-center justify-center font-display font-black text-3xl text-white">?</div>
+              </div>
+              <div class="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-goldCrown text-obsidian flex items-center justify-center font-bold text-xs border-2 border-obsidian">
+                <i class="ph-fill ph-crown"></i>
+              </div>
+            </div>
+
+            <!-- Profile Info -->
+            <div class="text-center sm:text-left flex-1">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div>
+                  <h2 id="profileName" class="text-xl font-display font-extrabold text-white">Your Name</h2>
+                  <p id="profileHandle" class="text-xs text-cloudMuted"></p>
+                </div>
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-volt/15 text-volt text-xs font-bold border border-volt/30 mx-auto sm:mx-0">
+                  <i class="ph-fill ph-shield-check"></i> PRO VERIFIED
+                </span>
+              </div>
+
+              <p class="text-xs text-cloud/90 mt-2.5 max-w-md">
+                Your bio goes here.</p>
+
+              <!-- Profile Quick Counters -->
+              <div class="grid grid-cols-3 gap-2 mt-4 pt-4 border-t border-graphiteBorder text-center">
+                <div>
+                  <p id="profilePostsCount" class="font-display font-black text-lg text-white">8</p>
+                  <p class="text-[10px] text-cloudMuted uppercase font-semibold">Posts</p>
+                </div>
+                <div>
+                  <p class="font-display font-black text-lg text-volt">1,420</p>
+                  <p class="text-[10px] text-cloudMuted uppercase font-semibold">Total XP</p>
+                </div>
+                <div>
+                  <p class="font-display font-black text-lg text-neonPurple">842</p>
+                  <p class="text-[10px] text-cloudMuted uppercase font-semibold">Followers</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Badges & Achievements -->
+        <div class="glass-panel p-5 rounded-3xl border border-graphiteBorder">
+          <h3 class="font-display font-bold text-base text-white mb-3">Earned Achievements</h3>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div class="bg-obsidian/60 p-3 rounded-2xl border border-volt/40 text-center">
+              <div class="w-10 h-10 mx-auto rounded-xl bg-volt/20 text-volt flex items-center justify-center text-xl mb-1">
+                <i class="ph-fill ph-barbell"></i>
+              </div>
+              <p class="text-xs font-bold text-cloud">Iron Disciple</p>
+              <p class="text-[10px] text-cloudMuted">50+ logged sets</p>
+            </div>
+
+            <div class="bg-obsidian/60 p-3 rounded-2xl border border-neonPurple/40 text-center">
+              <div class="w-10 h-10 mx-auto rounded-xl bg-neonPurple/20 text-neonPurple flex items-center justify-center text-xl mb-1">
+                <i class="ph-fill ph-fire"></i>
+              </div>
+              <p class="text-xs font-bold text-cloud">14-Day Streak</p>
+              <p class="text-[10px] text-cloudMuted">No days missed</p>
+            </div>
+
+            <div class="bg-obsidian/60 p-3 rounded-2xl border border-accentPink/40 text-center">
+              <div class="w-10 h-10 mx-auto rounded-xl bg-accentPink/20 text-accentPink flex items-center justify-center text-xl mb-1">
+                <i class="ph-fill ph-chat-teardrop-text"></i>
+              </div>
+              <p class="text-xs font-bold text-cloud">Voice of Hub</p>
+              <p class="text-[10px] text-cloudMuted">Top contributor</p>
+            </div>
+
+            <div class="bg-obsidian/60 p-3 rounded-2xl border border-goldCrown/40 text-center">
+              <div class="w-10 h-10 mx-auto rounded-xl bg-goldCrown/20 text-goldCrown flex items-center justify-center text-xl mb-1">
+                <i class="ph-fill ph-crown"></i>
+              </div>
+              <p class="text-xs font-bold text-cloud">Alpha Tier</p>
+              <p class="text-[10px] text-cloudMuted">Level 8 Rank</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- App Configuration & Preferences -->
+        <div class="glass-panel p-5 rounded-3xl border border-graphiteBorder space-y-3">
+          <h3 class="font-display font-bold text-base text-white mb-2">Ecosystem Preferences</h3>
+          
+          <div class="flex items-center justify-between p-3 rounded-2xl bg-obsidian/60 border border-graphiteBorder">
+            <div class="flex items-center gap-3">
+              <i class="ph-bold ph-speaker-high text-volt text-lg"></i>
+              <div>
+                <p class="text-xs font-semibold text-cloud">Haptic & Audio FX</p>
+                <p class="text-[10px] text-cloudMuted">Auditory feedback on clicks & sets</p>
+              </div>
+            </div>
+            <input type="checkbox" id="audioToggle" checked onchange="toggleAudioFeedback()" class="accent-volt w-4 h-4 cursor-pointer">
+          </div>
+
+          <div class="flex items-center justify-between p-3 rounded-2xl bg-obsidian/60 border border-graphiteBorder">
+            <div class="flex items-center gap-3">
+              <i class="ph-bold ph-moon-stars text-violetHub text-lg"></i>
+              <div>
+                <p class="text-xs font-semibold text-cloud">High-Contrast Neon Glow</p>
+                <p class="text-[10px] text-cloudMuted">Visual glow effects on active cards</p>
+              </div>
+            </div>
+            <input type="checkbox" checked class="accent-neonPurple w-4 h-4 cursor-pointer">
+          </div>
+
+          <button onclick="resetAllDataConfirmation()" class="w-full py-2.5 rounded-xl border border-red-500/30 text-red-400 text-xs font-bold hover:bg-red-500/10 transition-colors">
+            Reset Demo Data to Defaults
+          </button>
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- ============================================== -->
+    <!-- PERSISTENT BOTTOM NAVIGATION BAR (Bible Sec 7) -->
+    <!-- ============================================== -->
+    <nav id="dock" class="dock"><div class="dock-inner"><button data-d="home" onclick="goDock('home')"><i class="ph-bold ph-house"></i><span>Home</span></button><button data-d="train" onclick="goDock('train')"><i class="ph-bold ph-barbell"></i><span>Train</span></button><button data-d="mind" onclick="goDock('mind')"><i class="ph-bold ph-brain"></i><span>Mind</span></button><div class="dock-gap"></div><button data-d="money" onclick="goDock('money')"><i class="ph-bold ph-currency-dollar"></i><span>Money</span></button><button data-d="social" onclick="goDock('social')"><i class="ph-bold ph-users-three"></i><span>Social</span></button><button data-d="more" onclick="goDock('more')"><i class="ph-bold ph-dots-nine"></i><span>More</span></button></div><button class="dock-center" id="dockC" onclick="dockCenter()" aria-label="Home"><span class="orb"><img data-brand="emb" alt=""></span><em id="dockLabel">Home</em></button></nav>
+
+  </div>
+
+
+  <!-- ============================================== -->
+  <!-- 3. MODALS & OVERLAYS                           -->
+  <!-- ============================================== -->
+
+  <!-- A: CREATE ACTION BOTTOM SHEET / MODAL -->
+  <div id="createActionModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-end sm:items-center justify-center p-0 sm:p-4 transition-opacity">
+    <div class="w-full max-w-lg bg-graphite border-t sm:border border-graphiteBorder rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl relative animate-in">
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center gap-2">
+          <div class="w-2.5 h-2.5 rounded-full bg-volt"></div>
+          <h3 class="font-display font-extrabold text-lg text-white" id="createModalTitle">Create in DaHub</h3>
+        </div>
+        <button onclick="closeCreateModal()" class="w-8 h-8 rounded-full bg-graphiteLight text-cloudMuted hover:text-white flex items-center justify-center">
+          <i class="ph-bold ph-x text-base"></i>
+        </button>
+      </div>
+
+      <!-- Action Selectors or Direct Form -->
+      <div id="quickActionPills" class="grid grid-cols-3 gap-2.5 mb-5">
+        <button onclick="setupCreateForm('post')" class="create-type-btn p-3 rounded-2xl bg-graphiteLight border border-accentPink/50 text-accentPink text-center font-bold text-xs flex flex-col items-center gap-1.5">
+          <i class="ph-bold ph-note-pencil text-xl"></i> Social Post
+        </button>
+        <button onclick="setupCreateForm('workout')" class="create-type-btn p-3 rounded-2xl bg-graphiteLight border border-graphiteBorder text-cloudMuted text-center font-bold text-xs flex flex-col items-center gap-1.5">
+          <i class="ph-bold ph-barbell text-xl"></i> Gym PR / Set
+        </button>
+        <button onclick="setupCreateForm('ask')" class="create-type-btn p-3 rounded-2xl bg-graphiteLight border border-graphiteBorder text-cloudMuted text-center font-bold text-xs flex flex-col items-center gap-1.5">
+          <i class="ph-bold ph-sparkle text-xl"></i> AI Prompt
+        </button>
+      </div>
+
+      <!-- Dynamic Form Container -->
+      <form id="dynamicCreateForm" onsubmit="handleDynamicSubmit(event)" class="space-y-4">
+        <!-- Text content -->
+        <div>
+          <label class="block text-xs font-semibold text-cloudMuted mb-1" id="createLabelText">Post Content</label>
+          <textarea id="createTextarea" required rows="3" placeholder="Share your workout progress, gym thoughts or drip..." class="w-full bg-obsidian border border-graphiteBorder rounded-2xl p-3 text-sm text-cloud focus:outline-none focus:border-neonPurple resize-none"></textarea>
+        </div>
+
+        <!-- Tag Selector for Posts -->
+        <div id="postTagSelector" class="flex items-center gap-2 overflow-x-auto pb-1">
+          <span class="text-xs text-cloudMuted">Tag:</span>
+          <button type="button" onclick="selectPostTag(this, '#GymGains')" class="tag-chip text-xs px-2.5 py-1 rounded-xl bg-volt/15 text-volt border border-volt/30 font-bold">#GymGains</button>
+          <button type="button" onclick="selectPostTag(this, '#Streetwear')" class="tag-chip text-xs px-2.5 py-1 rounded-xl bg-obsidian text-cloudMuted border border-graphiteBorder">#Streetwear</button>
+          <button type="button" onclick="selectPostTag(this, '#Motivation')" class="tag-chip text-xs px-2.5 py-1 rounded-xl bg-obsidian text-cloudMuted border border-graphiteBorder">#Motivation</button>
+        </div>
+
+        <!-- Optional Image URL -->
+        <div id="postImageInputRow">
+          <label class="block text-xs font-semibold text-cloudMuted mb-1">Image URL (Optional)</label>
+          <input type="url" id="createImageInput" placeholder="https://images.unsplash.com/..." class="w-full bg-obsidian border border-graphiteBorder rounded-xl px-3 py-2 text-xs text-cloud focus:outline-none focus:border-neonPurple">
+        </div>
+
+        <button type="submit" class="btn-chunky w-full py-3.5 rounded-2xl bg-gradient-to-r from-neonPurple to-violetHub text-obsidian font-display font-extrabold text-sm uppercase tracking-wider shadow-chunky shadow-neonPurple/20 hover:brightness-110">
+          Publish to DaHub
+        </button>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- B: YOUTUBE VIDEO PLAYER MODAL (Media MVP) -->
+  <div id="videoPlayerModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="w-full max-w-2xl bg-graphite border border-graphiteBorder rounded-3xl overflow-hidden shadow-2xl relative">
+      <div class="p-4 border-b border-graphiteBorder flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i class="ph-fill ph-youtube-logo text-accentOrange text-xl"></i>
+          <h3 id="videoPlayerTitle" class="font-display font-bold text-sm text-white truncate max-w-sm md:max-w-md">Video Player</h3>
+        </div>
+        <button onclick="closeVideoPlayer()" class="w-8 h-8 rounded-full bg-graphiteLight text-cloud hover:text-white flex items-center justify-center">
+          <i class="ph-bold ph-x text-base"></i>
+        </button>
+      </div>
+
+      <!-- Iframe Player Wrapper -->
+      <div class="relative w-full aspect-video bg-black">
+        <iframe id="youtubeIframe" class="w-full h-full border-0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <div class="p-4 flex items-center justify-between">
+        <div id="videoPlayerChannel" class="text-xs font-bold text-cloudMuted">Channel</div>
+        <button id="modalWatchlistBtn" onclick="toggleCurrentVideoWatchlist()" class="text-xs font-bold px-3 py-1.5 rounded-xl bg-graphiteLight text-accentOrange border border-accentOrange/30 flex items-center gap-1.5">
+          <i class="ph ph-bookmark-simple"></i> Save to Watchlist
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- C: NOTIFICATION TOAST POPUP -->
+  <div id="notificationToast" class="fixed top-16 left-1/2 -translate-x-1/2 z-50 glass-panel px-4 py-2.5 rounded-2xl border border-volt/40 shadow-glow-volt text-xs font-bold text-cloud flex items-center gap-2 transition-all duration-300 opacity-0 pointer-events-none transform -translate-y-4">
+    <i class="ph-fill ph-bell-ringing text-volt text-base"></i>
+    <span id="toastMessage">Notification message</span>
+  </div>
+
+  <!-- Audio Synthesizer (Tone.js Fallback Web Audio) -->
+  <script src="js/01-boot.js"></script>
+
+  <!-- ============================================== -->
+  <!-- 4. CORE APPLICATION LOGIC & PERSISTENCE        -->
+  <!-- ============================================== -->
+  <script src="js/02-core.js"></script>
+
+<script src="js/03-social.js"></script>
+
+<script src="js/04-home-shell.js"></script>
+
+<script src="js/05-train.js"></script>
+</body>
+</html>
