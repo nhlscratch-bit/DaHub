@@ -35,18 +35,22 @@ function saveUserName() {
 function openOnboarding() {
   const old = document.getElementById('nameModal'); if (old) old.remove();
   if (localStorage.getItem('dahub_name_v3')) return;
-  const emb = document.querySelector('#splashScreen img[alt^="DaHub crowned"]').src, wm = document.querySelector('#splashScreen h1 img').src;
+  const wm = document.querySelector('#splashScreen h1 img').src;
   const d = document.createElement('div'); d.id = 'nameModal';
   d.className = 'fixed inset-0 z-[45] bg-obsidian overflow-y-auto flex flex-col items-center justify-center p-6 text-center';
-  d.style.background = 'radial-gradient(circle at 50% 30%,#2a1d4d 0,#101116 62%)';
-  d.innerHTML = `<img src="${emb}" alt="" class="w-40 h-auto drop-shadow-[0_0_24px_rgba(167,139,250,0.6)]"><img src="${wm}" alt="DaHub" class="w-56 h-auto -mt-2">
-    <p class="text-[11px] tracking-[0.25em] text-cloudMuted font-bold mt-1">ONE HUB. EVERY SIDE OF LIFE.</p>
-    <div class="w-full max-w-xs mt-7 space-y-3">
-      <input id="nameInput" maxlength="24" placeholder="Your name" oninput="const h=document.getElementById('handleInput');if(!h.dataset.t)h.value=this.value.toLowerCase().replace(/[^a-z0-9._]/g,'')" class="w-full bg-graphite border border-graphiteBorder rounded-2xl px-4 py-3.5 text-sm text-cloud text-center">
-      <div class="relative"><span class="absolute left-4 top-1/2 -translate-y-1/2 text-cloudMuted text-sm">@</span><input id="handleInput" maxlength="20" placeholder="handle" oninput="this.dataset.t=1" class="w-full bg-graphite border border-graphiteBorder rounded-2xl pl-9 pr-4 py-3.5 text-sm text-cloud text-center"></div>
-      <p id="nameErr" class="text-xs text-accentPink min-h-[1rem]"></p>
-      <button onclick="saveUserName()" class="btn-chunky w-full py-3.5 rounded-2xl bg-gradient-to-r from-neonPurple via-violetHub to-volt text-obsidian font-display font-extrabold text-sm uppercase tracking-wider">Enter DaHub</button>
-      <p class="text-[10px] text-cloudMuted">Your handle is how friends find you.</p>
+  d.style.background = 'radial-gradient(ellipse at 50% 22%,#33205f 0,#14111f 48%,#0b0b10 100%)';
+  const inp = 'w-full bg-black/40 border border-white/10 rounded-2xl px-4 py-4 text-[15px] text-white placeholder-white/35 text-left focus:outline-none focus:border-neonPurple focus:shadow-[0_0_0_3px_rgba(168,85,247,0.25)] transition';
+  d.innerHTML = `<img src="${wm}" alt="DaHub" class="w-72 max-w-[85%] h-auto drop-shadow-[0_0_28px_rgba(168,85,247,0.55)]">
+    <p class="text-[11px] tracking-[0.3em] text-white/60 font-bold mt-3">ONE HUB. EVERY SIDE OF LIFE.</p>
+    <div class="w-full max-w-sm mt-9 rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur p-5 text-left shadow-[0_20px_60px_rgba(0,0,0,0.5)]">
+      <p class="text-lg font-extrabold text-white">Create your profile</p>
+      <p class="text-xs text-white/50 mt-1 mb-4">Pick a name and a handle. This is how people find you.</p>
+      <div class="space-y-3">
+        <input id="nameInput" maxlength="24" placeholder="Your name" oninput="const h=document.getElementById('handleInput');if(!h.dataset.t)h.value=this.value.toLowerCase().replace(/[^a-z0-9._]/g,'')" class="${inp}">
+        <div class="relative"><span class="absolute left-4 top-1/2 -translate-y-1/2 text-volt font-bold">@</span><input id="handleInput" maxlength="20" placeholder="handle" oninput="this.dataset.t=1" class="${inp} !pl-9"></div>
+        <p id="nameErr" class="text-xs text-accentPink min-h-[1rem]"></p>
+        <button onclick="saveUserName()" class="btn-chunky w-full py-4 rounded-2xl bg-gradient-to-r from-neonPurple via-violetHub to-volt text-obsidian font-display font-extrabold text-sm uppercase tracking-wider">Enter DaHub</button>
+      </div>
     </div>`;
   document.body.appendChild(d);
 }
