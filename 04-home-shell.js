@@ -1,18 +1,19 @@
 /* ===== Redesign logic ===== */
 document.querySelectorAll('[data-brand]').forEach(el=>{const src=document.querySelector(el.dataset.brand==='wm'?'#splashScreen h1 img':'#splashScreen img[alt^="DaHub crowned"]');if(src)el.src=src.src;});
-const TAB_LABEL={home:'Home',train:'Train',media:'Media',social:'Social',ask:'Ask AI',profile:'Profile'};
-const SOON={mind:['Mind','Calm, mood and wellness tools. Not built yet.'],money:['Money','A clear view of your finances. Not built yet.'],arcade:['Arcade','Games and challenges. Not built yet.'],pet:['Pet','Your virtual companion. Not built yet.'],journal:['Journal','Private entries and reflection. Not built yet.'],messages:['Messages','Direct messages need the online backend, which is not connected yet.']};
+const TAB_LABEL={home:'Home',train:'Train',mind:'Mind',journal:'Journal',money:'Money',arcade:'Arcade',media:'Media',social:'Social',ask:'Ask AI',profile:'Profile'};
+const SOON={pet:['Pet','Your virtual companion. Not built yet.'],games:['Mind Games','Brain games and puzzles. Not built yet.'],messages:['Messages','Direct messages need the online backend, which is not connected yet.']};
 function switchTab(tabId){
   if(currentTab===tabId)return;
   try{playAudioTone(380,'sine',.05)}catch(e){}
   document.querySelectorAll('.tab-content').forEach(el=>el.classList.remove('active'));
   const t=document.getElementById('tab-'+tabId);if(t)t.classList.add('active');
   currentTab=tabId;document.body.dataset.tab=tabId;
-  document.querySelectorAll('#dock [data-d]').forEach(b=>{const k=b.dataset.d;b.classList.toggle('on',k===tabId||(k==='more'&&['media','ask','profile'].includes(tabId)))});
+  document.querySelectorAll('#dock [data-d]').forEach(b=>{const k=b.dataset.d;b.classList.toggle('on',k===tabId||(k==='more'&&['media','ask','profile','arcade'].includes(tabId))||(k==='mind'&&tabId==='journal'))});
   document.getElementById('dockLabel').textContent=TAB_LABEL[tabId]||'Home';
   window.scrollTo({top:0,behavior:'smooth'});
   if(tabId==='home')updateHome();
   if(tabId==='social'&&typeof renderSocial==='function')renderSocial();
+  if(window.SECTIONS&&SECTIONS[tabId])SECTIONS[tabId]();
 }
 document.body.dataset.tab='home';document.querySelector('#dock [data-d="home"]').classList.add('on');
 function dockCenter(){const c=document.getElementById('dockC');c.classList.remove('spin');void c.offsetWidth;c.classList.add('spin');switchTab('home')}

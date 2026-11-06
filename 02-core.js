@@ -517,7 +517,7 @@
     const mEsc = t => String(t == null ? '' : t).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
     const fmtViews = n => { n = +n; if (!n) return ''; return n >= 1e6 ? (n/1e6).toFixed(1)+'M views' : n >= 1e3 ? Math.round(n/1e3)+'K views' : n+' views'; };
     const isSaved = id => watchlist.some(w => w.id === id);
-    const findVideo = id => mediaResults.find(v => v.id === id) || watchlist.find(v => v.id === id);
+    const findVideo = id => mediaResults.find(v => v.id === id) || watchlist.find(v => v.id === id) || (typeof trendList !== 'undefined' && trendList.find(v => v.id === id)) || (typeof HIST !== 'undefined' && HIST.find(v => v.id === id));
 
     async function ytFetch(path, params) {
       let res;

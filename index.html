@@ -51,6 +51,7 @@
   </script>
 
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/screens.css">
 </head>
 <body class="bg-obsidian text-cloud font-sans antialiased min-h-screen selection:bg-neonPurple selection:text-obsidian overflow-x-hidden">
 
@@ -246,40 +247,18 @@
       <!-- ============================================== -->
       <!-- TAB 3: MEDIA (YOUTUBE DATA HUB MVP)            -->
       <!-- ============================================== -->
-      <section id="tab-media" class="tab-content space-y-6">
-        
-        <!-- Media Header -->
-        <div class="glass-panel-elevated p-5 rounded-3xl border border-graphiteBorder">
-          <div class="flex items-center justify-between mb-2">
-            <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-accentOrange/15 text-accentOrange text-xs font-bold border border-accentOrange/30">
-              <i class="ph-bold ph-youtube-logo"></i> MEDIA & VIDEO DISCOVERY
-            </div>
-            <span class="text-xs text-cloudMuted flex items-center gap-1">
-              <i class="ph-fill ph-check-circle text-volt"></i> Powered by YouTube API
-            </span>
-          </div>
-          <h2 class="font-display font-extrabold text-2xl text-white">YouTube</h2>
-          <p class="text-xs text-cloudMuted mt-1">Search anything, paste a video link, or browse. Watch right inside DaHub.</p>
-
-          <!-- Search Input Bar -->
-          <div class="mt-4 relative">
-            <i class="ph ph-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-cloudMuted text-lg"></i>
-            <input type="text" id="mediaSearchInput" oninput="document.getElementById('clearSearchBtn').classList.toggle('hidden',!this.value.trim())" onkeydown="if(event.key==='Enter')handleMediaSearch(this.value)" placeholder="Search YouTube or paste a video link..." class="w-full bg-obsidian border border-graphiteBorder rounded-2xl pl-10 pr-4 py-3 text-sm text-cloud focus:outline-none focus:border-accentOrange placeholder:text-cloudMuted/60">
-            <button onclick="clearMediaSearch()" id="clearSearchBtn" class="hidden absolute right-3.5 top-1/2 -translate-y-1/2 text-xs text-cloudMuted hover:text-white">
-              Clear
-            </button>
-          </div>
-
-          <!-- Filter Pills -->
-          <div class="flex items-center gap-2 mt-3 overflow-x-auto pb-1 scrollbar-none" id="mediaCategoryPills"><button onclick="filterMediaCategory('trending',this)" class="media-pill active px-3.5 py-1.5 rounded-xl text-xs font-bold bg-accentOrange text-obsidian whitespace-nowrap transition-all">Trending</button><button onclick="filterMediaCategory('music',this)" class="media-pill px-3.5 py-1.5 rounded-xl text-xs font-bold bg-graphite text-cloudMuted hover:text-white border border-graphiteBorder whitespace-nowrap transition-all">Music</button><button onclick="filterMediaCategory('gaming',this)" class="media-pill px-3.5 py-1.5 rounded-xl text-xs font-bold bg-graphite text-cloudMuted hover:text-white border border-graphiteBorder whitespace-nowrap transition-all">Gaming</button><button onclick="filterMediaCategory('news',this)" class="media-pill px-3.5 py-1.5 rounded-xl text-xs font-bold bg-graphite text-cloudMuted hover:text-white border border-graphiteBorder whitespace-nowrap transition-all">News</button><button onclick="filterMediaCategory('learn',this)" class="media-pill px-3.5 py-1.5 rounded-xl text-xs font-bold bg-graphite text-cloudMuted hover:text-white border border-graphiteBorder whitespace-nowrap transition-all">Learn</button><button onclick="filterMediaCategory('saved',this)" class="media-pill px-3.5 py-1.5 rounded-xl text-xs font-bold bg-graphite text-cloudMuted hover:text-white border border-graphiteBorder whitespace-nowrap transition-all">Saved (<span id="watchlistCount">0</span>)</button>
-          </div>
+      <section id="tab-media" class="tab-content space-y-4">
+        <div id="mediaTitle"></div>
+        <div class="neon flex items-center gap-2 px-4" style="--c:#a855f7;border-radius:999px"><i class="ph-bold ph-magnifying-glass text-xl text-white/70"></i><input id="mediaSearchInput" type="text" oninput="document.getElementById('clearSearchBtn').classList.toggle('hidden',!this.value.trim())" onkeydown="if(event.key==='Enter')handleMediaSearch(this.value)" placeholder="Search YouTube or paste a video link..." class="flex-1 bg-transparent py-3.5 text-sm text-white outline-none min-w-0"><button id="clearSearchBtn" onclick="clearMediaSearch();mediaGo('youtube')" class="hidden text-white/60"><i class="ph-bold ph-x"></i></button><button onclick="mediaSettings()" aria-label="YouTube settings" class="text-[#c084fc] text-2xl"><i class="ph-bold ph-sliders-horizontal"></i></button></div>
+        <div id="mediaChips" class="hscroll"><button data-k="youtube" onclick="mediaGo('youtube')" class="chipx on" style="--c:#f5a623"><i class="ph-fill ph-youtube-logo"></i>YouTube</button><button data-k="movies" onclick="mediaGo('movies')" class="chipx " style="--c:#a855f7"><i class="ph-fill ph-film-reel"></i>Movies</button><button data-k="tv" onclick="mediaGo('tv')" class="chipx " style="--c:#a855f7"><i class="ph-fill ph-television"></i>TV Shows</button><button data-k="music" onclick="mediaGo('music')" class="chipx " style="--c:#a855f7"><i class="ph-fill ph-music-notes"></i>Music</button><button class="chipx" onclick="mediaMore()"><i class="ph-bold ph-dots-three"></i>More</button></div>
+        <div id="mediaBrowse" class="space-y-4">
+          <div class="neon relative overflow-hidden p-5" style="--c:#7CFF3A;min-height:170px"><div class="absolute inset-0" style="background:radial-gradient(ellipse at 85% 40%,rgba(124,58,237,.55),transparent 60%)"></div><img data-brand="emb" alt="" class="absolute right-3 top-6 w-28 opacity-90"><div class="relative"><p class="font-['Permanent_Marker'] text-[28px] text-[#a855f7] -skew-x-6 leading-none" style="text-shadow:0 0 12px #a855f7">DAHUB MEDIA</p><p class="text-white font-bold text-[13px] mt-2 uppercase">Your all-in-one</p><p class="font-['Permanent_Marker'] text-[#7CFF3A] -skew-x-6">ENTERTAINMENT HUB</p><button onclick="mediaGo('trending')" class="chipx mt-3 !py-3" style="--c:#f5a623"><i class="ph-fill ph-play"></i>Explore Now</button></div></div>
+          <div><div class="flex justify-between items-center mb-2"><p class="font-bold text-white text-lg flex items-center gap-2"><i class="ph-fill ph-fire text-[#ff6a2b]"></i>Trending Now</p><button onclick="mediaGo('trending')" class="text-sm font-bold text-[#c084fc]">See All &rarr;</button></div><div id="mediaTrend" class="flex gap-3"></div></div>
+          <div><div class="mb-2"><p class="font-bold text-white text-lg flex items-center gap-2"><i class="ph-fill ph-film-slate text-[#a855f7]"></i>Movies &amp; TV</p><p class="text-[11px] text-white/50">Trailers and clips from YouTube. A full movie and TV catalog is not connected.</p></div><div class="grid grid-cols-5 gap-2"><button onclick="mediaGo('movies')" class="neon sm tile2" style="--c:#a855f7"><i class="ph-fill ph-popcorn"></i>Movies</button><button onclick="mediaGo('tv')" class="neon sm tile2" style="--c:#7CFF3A"><i class="ph-fill ph-television"></i>TV Shows</button><button onclick="mediaGo('comedy')" class="neon sm tile2" style="--c:#2ea8ff"><i class="ph-fill ph-smiley"></i>Comedy</button><button onclick="mediaGo('drama')" class="neon sm tile2" style="--c:#f5a623"><i class="ph-fill ph-mask-sad"></i>Drama</button><button onclick="mediaGo('action')" class="neon sm tile2" style="--c:#ff3d9a"><i class="ph-fill ph-film-reel"></i>Action</button></div></div>
+          <div><p class="font-bold text-white text-lg flex items-center gap-2 mb-2"><i class="ph-fill ph-music-notes text-[#a855f7]"></i>Music</p><div class="grid grid-cols-5 gap-2"><button onclick="mediaGo('hiphop')" class="neon sm tile2" style="--c:#a855f7"><i class="ph-fill ph-headphones"></i>Hip-Hop</button><button onclick="mediaGo('rnb')" class="neon sm tile2" style="--c:#7CFF3A"><i class="ph-fill ph-equalizer"></i>R&amp;B</button><button onclick="mediaGo('edm')" class="neon sm tile2" style="--c:#2ea8ff"><i class="ph-fill ph-vinyl-record"></i>EDM</button><button onclick="mediaGo('rock')" class="neon sm tile2" style="--c:#f5a623"><i class="ph-fill ph-waveform"></i>Rock</button><button onclick="mediaGo('mtrend')" class="neon sm tile2" style="--c:#ff3d9a"><i class="ph-fill ph-globe"></i>Trending</button></div></div>
+          <div class="grid grid-cols-2 gap-3"><button onclick="histSheet()" class="neon sm p-3 flex items-center gap-2 text-left" style="--c:#a855f7"><i class="ph-fill ph-clock-counter-clockwise text-3xl text-[#a855f7]"></i><span><b class="block text-white text-[13px]">Watch History</b><small class="text-white/55 text-[10px]">Continue Watching</small></span></button><button onclick="listSheet()" class="neon sm p-3 flex items-center gap-2 text-left" style="--c:#7CFF3A"><i class="ph-fill ph-heart text-3xl text-[#7CFF3A]"></i><span><b class="block text-white text-[13px]">My Watchlist (<span id="watchlistCount">0</span>)</b><small class="text-white/55 text-[10px]">Save for Later</small></span></button></div>
         </div>
-
-        <!-- Video Grid Container -->
-        <div id="mediaGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <!-- Videos dynamically rendered by JS -->
-        </div>
-
+        <div id="mediaResultsWrap" class="hidden space-y-3"><button onclick="mediaGo('youtube')" class="text-sm font-bold text-[#c084fc]"><i class="ph-bold ph-arrow-left"></i> Back</button><p id="mediaResTitle" class="sub-ttl"></p><div id="mediaGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div></div>
       </section>
 
 
@@ -293,60 +272,15 @@
       <!-- TAB 5: ASK AI (LIFESTYLE & TRAINING ASSISTANT)  -->
       <!-- ============================================== -->
       <section id="tab-ask" class="tab-content space-y-4">
-        
-        <!-- AI Header Banner -->
-        <div class="glass-panel-elevated p-4 md:p-5 rounded-3xl border border-graphiteBorder flex items-center justify-between">
-          <div class="flex items-center gap-3">
-            <div class="w-12 h-12 rounded-2xl bg-electricBlue/20 text-electricBlue border border-electricBlue/40 flex items-center justify-center text-2xl shadow-glow-cyan">
-              <i class="ph-fill ph-brain"></i>
-            </div>
-            <div>
-              <div class="flex items-center gap-1.5">
-                <h2 class="font-display font-extrabold text-xl text-white">DaHub AI Core</h2>
-                <span class="w-2 h-2 rounded-full bg-volt animate-ping"></span>
-              </div>
-              <p class="text-xs text-cloudMuted">Trained on gym biomechanics, macro nutrition & streetwear aesthetics.</p>
-            </div>
-          </div>
-          <button onclick="clearAiChat()" class="text-xs text-cloudMuted hover:text-white px-2.5 py-1 rounded-lg bg-graphite border border-graphiteBorder">
-            Clear
-          </button>
-        </div>
-
-        <!-- Preset Suggested Prompts -->
-        <div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
-          <button onclick="useAiPreset('Plan a 4-day chest and arm hypertrophy split with deload weeks')" class="text-xs px-3 py-1.5 rounded-xl bg-graphite border border-graphiteBorder text-cloudMuted hover:text-electricBlue hover:border-electricBlue whitespace-nowrap transition-all">
-            💪 4-Day Hypertrophy Split
-          </button>
-          <button onclick="useAiPreset('What are the best sneaker drops to pair with dark cargo streetwear?')" class="text-xs px-3 py-1.5 rounded-xl bg-graphite border border-graphiteBorder text-cloudMuted hover:text-electricBlue hover:border-electricBlue whitespace-nowrap transition-all">
-            👟 Streetwear & Sneaker Style
-          </button>
-          <button onclick="useAiPreset('How to hit 180g protein on a 2200 kcal budget without protein shakes?')" class="text-xs px-3 py-1.5 rounded-xl bg-graphite border border-graphiteBorder text-cloudMuted hover:text-electricBlue hover:border-electricBlue whitespace-nowrap transition-all">
-            🥩 180g Protein Meal Blueprint
-          </button>
-        </div>
-
-        <!-- Chat History Window -->
-        <div id="aiChatWindow" class="glass-panel p-4 rounded-3xl border border-graphiteBorder h-[420px] overflow-y-auto space-y-4">
-          <!-- Default AI Welcome Bubble -->
-          <div class="flex items-start gap-3">
-            <div class="w-8 h-8 rounded-xl bg-electricBlue/20 text-electricBlue flex-shrink-0 flex items-center justify-center font-bold text-xs">
-              AI
-            </div>
-            <div class="bg-graphiteLight p-3.5 rounded-2xl rounded-tl-sm text-xs text-cloud leading-relaxed max-w-[85%] border border-graphiteBorder">
-              Yo! I am your DaHub intelligence module. Ask me anything about heavy lifts, form checks, macro nutrition splits, or tailoring your lifestyle aesthetic. What are we working on today?
-            </div>
-          </div>
-        </div>
-
-        <!-- AI Input Form -->
-        <form onsubmit="handleSendAiMessage(event)" class="relative flex items-center gap-2">
-          <input type="text" id="aiInputPrompt" required placeholder="Ask about lifting form, diet, streetwear fits..." class="w-full bg-graphite border border-graphiteBorder rounded-2xl pl-4 pr-12 py-3.5 text-sm text-cloud focus:outline-none focus:border-electricBlue placeholder:text-cloudMuted/60">
-          <button type="submit" id="aiSendBtn" class="absolute right-2.5 top-1/2 -translate-y-1/2 w-9 h-9 rounded-xl bg-electricBlue text-obsidian flex items-center justify-center font-bold hover:brightness-110 active:scale-95 transition-all">
-            <i class="ph-bold ph-paper-plane-tilt text-base"></i>
-          </button>
-        </form>
-
+        <div id="askTitle"></div>
+        <div class="neon p-3" style="--c:#a855f7"><p class="font-bold text-white flex items-center gap-2 mb-2"><i class="ph-fill ph-star text-[#f5a623]"></i>Quick Prompts</p><div class="grid grid-cols-3 gap-2"><button onclick="useAiPreset('Give me fitness tips for building muscle')" class="neon sm p-2.5 flex items-center gap-2 text-left text-[12px] font-semibold text-white" style="--c:#a855f7"><i class="ph-bold ph-barbell text-2xl shrink-0" style="color:#a855f7"></i>Fitness Tips</button><button onclick="useAiPreset('Mindset advice for staying motivated')" class="neon sm p-2.5 flex items-center gap-2 text-left text-[12px] font-semibold text-white" style="--c:#7CFF3A"><i class="ph-bold ph-brain text-2xl shrink-0" style="color:#7CFF3A"></i>Mindset Advice</button><button onclick="useAiPreset('Nutrition help for hitting my protein goal')" class="neon sm p-2.5 flex items-center gap-2 text-left text-[12px] font-semibold text-white" style="--c:#f5a623"><i class="ph-bold ph-fork-knife text-2xl shrink-0" style="color:#f5a623"></i>Nutrition Help</button><button onclick="useAiPreset('Money guidance for budgeting better')" class="neon sm p-2.5 flex items-center gap-2 text-left text-[12px] font-semibold text-white" style="--c:#2ea8ff"><i class="ph-bold ph-currency-dollar text-2xl shrink-0" style="color:#2ea8ff"></i>Money Guidance</button><button onclick="useAiPreset('Life advice for a fresh start')" class="neon sm p-2.5 flex items-center gap-2 text-left text-[12px] font-semibold text-white" style="--c:#a855f7"><i class="ph-bold ph-lightbulb text-2xl shrink-0" style="color:#a855f7"></i>Life Advice</button><button onclick="useAiPreset('Tell me a fun fact')" class="neon sm p-2.5 flex items-center gap-2 text-left text-[12px] font-semibold text-white" style="--c:#2ee6c0"><i class="ph-bold ph-chats-circle text-2xl shrink-0" style="color:#2ee6c0"></i>Fun Facts</button></div></div>
+        <div class="neon p-4" style="--c:#7CFF3A"><div class="text-center"><i class="ph-bold ph-chats-circle text-5xl text-[#a855f7]"></i><p class="font-bold text-white text-xl">Start a Conversation</p><p class="text-[12px] text-white/65">Ask me anything, from life advice to workout plans.</p></div>
+          <div id="aiChatWindow" class="aiwin space-y-3 my-3"></div>
+          <form onsubmit="handleSendAiMessage(event)" class="relative mt-3"><i class="ph-fill ph-sparkle absolute left-4 top-1/2 -translate-y-1/2 text-[#a855f7]"></i><input id="aiInputPrompt" required placeholder="Type your question here..." class="inp !rounded-full !pl-11 !pr-14"><button type="submit" id="aiSendBtn" class="absolute right-1.5 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full border-2 border-[#a855f7] bg-[#1a0a2e] text-[#c084fc] flex items-center justify-center"><i class="ph-fill ph-paper-plane-right"></i></button></form>
+          <p class="text-[10px] text-white/40 text-center mt-2">Demo assistant: replies are scripted until a live AI is connected.</p>
+          <button onclick="clearAiChat()" class="text-[11px] text-white/40 block mx-auto mt-1">Clear chat</button></div>
+        <p class="font-bold text-white text-lg flex items-center gap-2 px-1"><i class="ph-fill ph-crown-simple text-[#f5a623]"></i>Trending Questions</p>
+        <div class="space-y-2"><button onclick="useAiPreset('How can I stay consistent at the gym?')" class="neon sm flex items-center gap-3 p-3 w-full text-left text-[14px] text-white" style="--c:#a855f7;border-radius:16px"><i class="ph-fill ph-fire text-2xl" style="color:#ff6a2b"></i><span class="flex-1">How can I stay consistent at the gym?</span><i class="ph-bold ph-caret-right text-[#a855f7]"></i></button><button onclick="useAiPreset('Tips to reduce stress and anxiety?')" class="neon sm flex items-center gap-3 p-3 w-full text-left text-[14px] text-white" style="--c:#a855f7;border-radius:16px"><i class="ph-fill ph-brain text-2xl" style="color:#d946ef"></i><span class="flex-1">Tips to reduce stress and anxiety?</span><i class="ph-bold ph-caret-right text-[#a855f7]"></i></button><button onclick="useAiPreset('How do I budget better?')" class="neon sm flex items-center gap-3 p-3 w-full text-left text-[14px] text-white" style="--c:#a855f7;border-radius:16px"><i class="ph-fill ph-coins text-2xl" style="color:#f5a623"></i><span class="flex-1">How do I budget better?</span><i class="ph-bold ph-caret-right text-[#a855f7]"></i></button><button onclick="useAiPreset('What's a good movie to watch tonight?')" class="neon sm flex items-center gap-3 p-3 w-full text-left text-[14px] text-white" style="--c:#a855f7;border-radius:16px"><i class="ph-fill ph-film-slate text-2xl" style="color:#a855f7"></i><span class="flex-1">What's a good movie to watch tonight?</span><i class="ph-bold ph-caret-right text-[#a855f7]"></i></button></div>
       </section>
 
 
@@ -473,7 +407,11 @@
 
       </section>
 
-    </main>
+    <section id="tab-mind" class="tab-content space-y-4"><div id="mindRoot" class="space-y-4"></div></section>
+      <section id="tab-journal" class="tab-content space-y-4"><div id="journalRoot" class="space-y-4"></div></section>
+      <section id="tab-money" class="tab-content space-y-4"><div id="moneyRoot" class="space-y-4"></div></section>
+      <section id="tab-arcade" class="tab-content space-y-4"><div id="arcadeRoot" class="space-y-4"></div></section>
+      </main>
 
     <!-- ============================================== -->
     <!-- PERSISTENT BOTTOM NAVIGATION BAR (Bible Sec 7) -->
@@ -590,5 +528,6 @@
 <script src="js/04-home-shell.js"></script>
 
 <script src="js/05-train.js"></script>
+  <script src="js/06-sections.js"></script>
 </body>
 </html>
